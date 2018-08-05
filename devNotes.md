@@ -23,5 +23,5 @@ configurations.all {
 ```
 to the build.gradle file
 
-
+Note: when you're testing the app, it seems to stay broadcasting even when you close the app, so you may need to disable then re-enable blueloss everytime you reload the app on the phone in dev.
 
