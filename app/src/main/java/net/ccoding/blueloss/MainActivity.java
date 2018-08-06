@@ -1,6 +1,8 @@
 package net.ccoding.blueloss;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,24 +13,27 @@ import android.widget.Switch;
 public class MainActivity extends AppCompatActivity {
   public static SharedPreferences appPrefs;
   public static SharedPreferences networks;
+  public static WifiManager wifiManager;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    // This is so that we can access the prefs in a non activity class.
+    // We set up stuff here so that we can access them in non-activity classes.
     appPrefs = getSharedPreferences( "blueloss_settings", MODE_PRIVATE);
     networks = getSharedPreferences( "networks", MODE_PRIVATE);
+    wifiManager = (WifiManager)this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
-    setUpCompoundButtonListeners();
 
 //    Log.d("DAWG", BlueLossSettings.isBlueLossEnabled() + "");
 //    BlueLossSettings.setBlueLossEnabled(false);
 //    Log.d("DAWG", BlueLossSettings.isBlueLossEnabled() + "");
 //    BlueLossSettings.setBlueLossEnabled(true);
 
-    Discoverable.setDiscoverable();
+    if(Utils.shouldSetToDiscoverable()){
+      Discoverable.setDiscoverable();
+    }
 
   }
 
@@ -40,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         BlueLossSettings.setDiscoverableWhenNotConnectedToNetwork(isChecked);
-        Log.d("DAWG", "isDiscoverableWhenNotConnectedToNetwork is enabled: " + BlueLossSettings.isDiscoverableWhenNotConnectedToNetwork());
       }
     });
 
@@ -51,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         BlueLossSettings.setRollbarLoggingEnabled(isChecked);
-        Log.d("DAWG", "isRollbarLoggingEnabled is enabled: " + BlueLossSettings.isRollbarLoggingEnabled());
       }
     });
 
@@ -63,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         BlueLossSettings.setBlueLossEnabled(isChecked);
-        Log.d("DAWG", "BlueLoss is enabled: " + BlueLossSettings.isBlueLossEnabled());
       }
     });
   }

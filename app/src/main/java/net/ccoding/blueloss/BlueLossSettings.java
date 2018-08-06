@@ -1,7 +1,7 @@
 package net.ccoding.blueloss;
 
 
-public final class BlueLossSettings {
+final class BlueLossSettings {
   public static boolean isBlueLossEnabled() {
     return MainActivity.appPrefs.getBoolean("bluelossEnabled",true);
   }

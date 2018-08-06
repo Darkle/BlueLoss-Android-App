@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 * https://github.com/angcyo/DuDuHome_Home/blob/master/app/src/main/java/com/dudu/android/launcher/utils/BtPhoneUtils.java#L810
 * https://stackoverflow.com/questions/37628/what-is-reflection-and-why-is-it-useful
 */
-public class Discoverable {
+final class Discoverable {
   private static Method setScanMode;
   private static BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
   private static int scanTimeInSeconds = 1;
