@@ -10,10 +10,6 @@ import java.util.NoSuchElementException;
 final class Utils {
   private static final String logTag = Utils.class.getSimpleName();
 
-  public static boolean shouldSetToDiscoverable() {
-    return BlueLossSettings.isDiscoverableWhenNotConnectedToNetwork() || Networks.isConnectedToASavedNetwork();
-  }
-
   public static Map.Entry<String,String> getStringMapFirstEntry(Map<String,String> map){
     Map.Entry<String,String> entry = new AbstractMap.SimpleEntry<String, String>(null, null);
     try{

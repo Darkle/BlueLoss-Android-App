@@ -44,4 +44,8 @@ final class Discoverable {
       e.printStackTrace();
     }
   }
+
+  public static boolean shouldSetToDiscoverable() {
+    return BlueLossSettings.isDiscoverableWhenNotConnectedToNetwork() || Networks.isConnectedToASavedNetwork();
+  }
 }

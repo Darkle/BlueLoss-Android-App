@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    // We set up stuff here so that we can access them in non-activity classes.
+    // We set up some stuff here so that we can access them in non-activity classes.
     appContext = this.getApplicationContext();
     appPrefs = getSharedPreferences( "blueloss_settings", MODE_PRIVATE);
     prefsNetworks = getSharedPreferences( "networks", MODE_PRIVATE);
@@ -32,8 +32,7 @@ public class MainActivity extends AppCompatActivity {
     if(!Permissions.permissionsEnabled(MainActivity.this)){
       Permissions.promptForPermissions(MainActivity.this);
     }
-
-    if(Utils.shouldSetToDiscoverable()){
+    if(Discoverable.shouldSetToDiscoverable()){
       Discoverable.setDiscoverable();
     }
 

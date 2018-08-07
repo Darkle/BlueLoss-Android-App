@@ -10,7 +10,7 @@ final class Permissions {
   private static final String logTag = Permissions.class.getSimpleName();
 
   public static void promptForPermissions(MainActivity activity){
-    // ACCESS_COARSE_LOCATION is a dangerous permissions, so we need to ask for it:
+    // ACCESS_COARSE_LOCATION is considered a dangerous permission, so we need to ask for it:
     // https://developer.android.com/guide/topics/permissions/overview#permission-groups
     ActivityCompat.requestPermissions(
         activity,
