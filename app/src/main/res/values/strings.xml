@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BlueLoss</string>
+    <string name="title_activity_networks_view">NetworksViewActivity</string>
 </resources>

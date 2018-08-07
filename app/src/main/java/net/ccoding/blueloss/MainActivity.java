@@ -12,7 +12,7 @@ import android.widget.Switch;
 
 public class MainActivity extends AppCompatActivity {
   public static SharedPreferences appPrefs;
-  public static SharedPreferences networks;
+  public static SharedPreferences prefsNetworks;
   public static WifiManager wifiManager;
 
   @Override
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     // We set up stuff here so that we can access them in non-activity classes.
     appPrefs = getSharedPreferences( "blueloss_settings", MODE_PRIVATE);
-    networks = getSharedPreferences( "networks", MODE_PRIVATE);
+    prefsNetworks = getSharedPreferences( "networks", MODE_PRIVATE);
     wifiManager = (WifiManager)this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
 
@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
       Discoverable.setDiscoverable();
     }
 
+    setUpCompoundButtonListeners();
   }
 
   private void setUpCompoundButtonListeners(){
