@@ -13,8 +13,9 @@ import java.lang.reflect.Method;
 */
 final class Discoverable {
   private static Method setScanMode;
-  private static BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-  private static int scanTimeInSeconds = 1;
+  private static final BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+  private static final int scanTimeInSeconds = 1;
+  private static final String logTag = Discoverable.class.getSimpleName();
 
   static {
     try {

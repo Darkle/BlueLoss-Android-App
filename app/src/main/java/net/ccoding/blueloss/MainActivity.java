@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
   public static WifiManager wifiManager;
   public static Context appContext;
 
+  private static final String logTag = MainActivity.class.getSimpleName();
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -27,21 +29,20 @@ public class MainActivity extends AppCompatActivity {
     prefsNetworks = getSharedPreferences( "networks", MODE_PRIVATE);
     wifiManager = (WifiManager)this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
-//    Map<String,String> networks = new HashMap<String,String>();
-//    networks.put(null, null);
-//    Map.Entry<String,String> entry = new AbstractMap.SimpleEntry<String, String>(null, null);
-//    String bssid = entry.getKey();
-//    networks.containsKey("asd");
-//    Log.d("DAWG", BlueLossSettings.isBlueLossEnabled() + "");
-//    BlueLossSettings.setBlueLossEnabled(false);
-//    Log.d("DAWG", BlueLossSettings.isBlueLossEnabled() + "");
-//    BlueLossSettings.setBlueLossEnabled(true);
+    if(!Permissions.permissionsEnabled(MainActivity.this)){
+      Permissions.promptForPermissions(MainActivity.this);
+    }
 
     if(Utils.shouldSetToDiscoverable()){
       Discoverable.setDiscoverable();
     }
 
     setUpCompoundButtonListeners();
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    Permissions.handleRequestResult(requestCode, permissions, grantResults);
   }
 
   private void setUpCompoundButtonListeners(){
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 //      @Override
 //      public void onClick(View v) {
 //        Networks.saveCurrentNetwork();
-//        Log.d("DAWG", NetworkInfo.getNetworkInfo() + "");
+//        Log.d(logTag, NetworkInfo.getNetworkInfo() + "");
 //
 //      }
 //    });

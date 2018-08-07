@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 final class Utils {
+  private static final String logTag = Utils.class.getSimpleName();
 
   public static boolean shouldSetToDiscoverable() {
     return BlueLossSettings.isDiscoverableWhenNotConnectedToNetwork() || Networks.isConnectedToASavedNetwork();

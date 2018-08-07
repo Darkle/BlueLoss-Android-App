@@ -8,12 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 final class Networks {
-  private static String toastMessageForNullBSSID = "The current network returned null for the bssid, so we're not saving it. Sorry :-(";
-  private static Type typeOfHashMap = new TypeToken<Map<String, String>>() { }.getType();  // https://stackoverflow.com/a/12117517/2785644
+  private static final String toastMessageForNullBSSID = "The current network returned null for the bssid, so we're not saving it. Sorry :-(";
+  private static final Type typeOfHashMap = new TypeToken<Map<String, String>>() { }.getType();  // https://stackoverflow.com/a/12117517/2785644
+  private static final String logTag = Networks.class.getSimpleName();
 
   public static boolean isConnectedToASavedNetwork() {
-    Map.Entry<String,String> networkInfo = Utils.getStringMapFirstEntry(NetworkInfo.getNetworkInfo());
-    String bssid = networkInfo.getKey();
+    Map.Entry<String,String> networkEntry = Utils.getStringMapFirstEntry(NetworkInfo.getNetworkInfo());
+    String bssid = networkEntry.getKey();
 
     if(bssid == null){
       return false;
@@ -22,9 +23,9 @@ final class Networks {
   }
 
   public static void saveCurrentNetwork(){
-    Map.Entry<String,String> networkInfo = Utils.getStringMapFirstEntry(NetworkInfo.getNetworkInfo());
-    String bssid = networkInfo.getKey();
-    String ssid = networkInfo.getValue();
+    Map.Entry<String,String> networkEntry = Utils.getStringMapFirstEntry(NetworkInfo.getNetworkInfo());
+    String bssid = networkEntry.getKey();
+    String ssid = networkEntry.getValue();
     if(bssid == null){
       Utils.showToast(toastMessageForNullBSSID);
       return;

@@ -2,6 +2,8 @@ package net.ccoding.blueloss;
 
 
 final class BlueLossSettings {
+  private static final String logTag = BlueLossSettings.class.getSimpleName();
+
   public static boolean isBlueLossEnabled() {
     return MainActivity.appPrefs.getBoolean("bluelossEnabled",true);
   }
