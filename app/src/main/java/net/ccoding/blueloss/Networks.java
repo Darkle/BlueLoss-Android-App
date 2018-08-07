@@ -9,8 +9,7 @@ import java.util.Map;
 
 final class Networks {
   private static String toastMessageForNullBSSID = "The current network returned null for the bssid, so we're not saving it. Sorry :-(";
-  // https://stackoverflow.com/a/12117517/2785644
-  private static Type typeOfHashMap = new TypeToken<Map<String, String>>() { }.getType();
+  private static Type typeOfHashMap = new TypeToken<Map<String, String>>() { }.getType();  // https://stackoverflow.com/a/12117517/2785644
 
   public static boolean isConnectedToASavedNetwork() {
     Map.Entry<String,String> networkInfo = Utils.getStringMapFirstEntry(NetworkInfo.getNetworkInfo());

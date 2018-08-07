@@ -27,7 +27,11 @@ public class MainActivity extends AppCompatActivity {
     prefsNetworks = getSharedPreferences( "networks", MODE_PRIVATE);
     wifiManager = (WifiManager)this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
-
+//    Map<String,String> networks = new HashMap<String,String>();
+//    networks.put(null, null);
+//    Map.Entry<String,String> entry = new AbstractMap.SimpleEntry<String, String>(null, null);
+//    String bssid = entry.getKey();
+//    networks.containsKey("asd");
 //    Log.d("DAWG", BlueLossSettings.isBlueLossEnabled() + "");
 //    BlueLossSettings.setBlueLossEnabled(false);
 //    Log.d("DAWG", BlueLossSettings.isBlueLossEnabled() + "");
