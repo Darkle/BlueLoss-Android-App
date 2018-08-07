@@ -1,7 +1,5 @@
 package net.ccoding.blueloss;
 
-import android.net.wifi.WifiInfo;
-import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -10,46 +8,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 final class Networks {
+  private static String toastMessageForNullBSSID = "The current network returned null for the bssid, so we're not saving it :-(";
+
   public static boolean isConnectedToASavedNetwork() {
-    Map<String,String> networkInfo = getNetworkInfo();
-    String bssid = networkInfo.get("BSSID");
-//    if(bssid == null){
-//      return false;
-//    }
+    Map.Entry<String,String> networkInfo = Utils.getStringMapFirstEntry(NetworkInfo.getNetworkInfo());
+    String bssid = networkInfo.getKey();
+
+    if(bssid == null){
+      return false;
+    }
     return networkFoundInSavedNetworks(bssid);
-  }
-
-  private static Map<String,String> getNetworkInfo(){
-    Map<String,String> networkInfo = new HashMap<>();
-    networkInfo.put("BSSID", getNetworkBSSID());
-    networkInfo.put("SSID", getNetworkSSID());
-    return networkInfo;
-  }
-
-  private static WifiInfo getConnectionInfo(){
-    return MainActivity.wifiManager.getConnectionInfo();
-  }
-
-  private static String getNetworkBSSID(){
-    return getConnectionInfo().getBSSID();
-  }
-
-  private static String getNetworkSSID(){
-    return getConnectionInfo().getSSID();
   }
 
   private static boolean networkFoundInSavedNetworks(String bssid){
     Map<String,String> savedNetworks = getSavedNetworks();
-
-    boolean networkFound = false;
-
-    for (Object value : savedNetworks.values()) {
-      if(value == bssid){
-        networkFound = true;
-      }
-    }
-
-    return networkFound;
+    return savedNetworks.containsKey(bssid);
   }
 
   private static Map<String,String> getSavedNetworks(){
@@ -57,13 +30,23 @@ final class Networks {
     // https://stackoverflow.com/a/12117517/2785644
     Type typeOfHashMap = new TypeToken<Map<String, String>>() { }.getType();
     Gson gson = new Gson();
+    Map<String,String> networks = gson.fromJson(serializedNetworks, typeOfHashMap);
 
-    return gson.fromJson(serializedNetworks, typeOfHashMap);
+    if(networks == null){
+      networks = new HashMap<>();
+    }
+    return networks;
   }
 
-  private static void saveCurrentNetwork(){
-    Map<String,String> networkInfo = getNetworkInfo();
-    saveNetwork(networkInfo.get("BSSID"), networkInfo.get("SSID"));
+  public static void saveCurrentNetwork(){
+    Map.Entry<String,String> networkInfo = Utils.getStringMapFirstEntry(NetworkInfo.getNetworkInfo());
+    String bssid = networkInfo.getKey();
+    String ssid = networkInfo.getValue();
+    if(bssid == null){
+      Utils.showToast(toastMessageForNullBSSID);
+      return;
+    }
+    saveNetwork(bssid, ssid);
   }
 
   private static void saveNetwork(String bssid, String ssid){
@@ -72,24 +55,29 @@ final class Networks {
     }
 
     Map<String,String> savedNetworks = getSavedNetworks();
-    savedNetworks.put("BSSID", bssid);
-    savedNetworks.put("SSID", ssid);
+    savedNetworks.put(bssid, ssid);
 
-    Gson gson = new Gson();
-    String networksAsJsonString = gson.toJson(savedNetworks);
-
-    Log.d("DAWG", networksAsJsonString);
-
-//    MainActivity.prefsNetworks.edit().putString("networks", networksAsJsonString).apply();
+    MainActivity.prefsNetworks.edit().putString(
+        "networks",
+        convertNetworksMapToJsonString(savedNetworks)
+    ).apply();
   }
 
-  private static void removeNetwork(String bssid){
+  public static void removeNetwork(String bssid){
     if(!networkFoundInSavedNetworks(bssid)){
       return;
     }
     Map<String,String> savedNetworks = getSavedNetworks();
     savedNetworks.remove(bssid);
 
-    MainActivity.prefsNetworks.edit().putString("networks", blueLossEnabled).apply();
+    MainActivity.prefsNetworks.edit().putString(
+        "networks",
+        convertNetworksMapToJsonString(savedNetworks)
+    ).apply();
+  }
+
+  private static String convertNetworksMapToJsonString(Map<String,String> networks){
+    Gson gson = new Gson();
+    return gson.toJson(networks);
   }
 }
