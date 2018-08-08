@@ -11,13 +11,15 @@ import java.lang.reflect.Method;
 * https://github.com/angcyo/DuDuHome_Home/blob/master/app/src/main/java/com/dudu/android/launcher/utils/BtPhoneUtils.java#L810
 * https://stackoverflow.com/questions/37628/what-is-reflection-and-why-is-it-useful
 */
-final class Discoverable {
+public class Discoverable {
   private static Method setScanMode;
   private static final BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
   private static final int scanTimeInSeconds = 1;
   private static final String logTag = Discoverable.class.getSimpleName();
+  private BlueLossSettings blueLossSettings;
+  private Networks networks;
 
-  static {
+  {
     try {
       setScanMode = BluetoothAdapter.class.getMethod("setScanMode", int.class, int.class);
       setScanMode.setAccessible(true);
@@ -26,7 +28,12 @@ final class Discoverable {
     }
   }
 
-  public static void setUnDiscoverable() {
+  public Discoverable(BlueLossSettings blueLossSettings, Networks networks) {
+    this.blueLossSettings = blueLossSettings;
+    this.networks = networks;
+  }
+
+  public void setUnDiscoverable() {
     try {
       setScanMode.invoke(mBluetoothAdapter, BluetoothAdapter.SCAN_MODE_CONNECTABLE, scanTimeInSeconds);
     } catch (Exception e) {
@@ -34,8 +41,8 @@ final class Discoverable {
     }
   }
 
-  public static void setDiscoverable(){
-    if(!BlueLossSettings.isBlueLossEnabled()){
+  public void setDiscoverable(){
+    if(!blueLossSettings.isBlueLossEnabled()){
       return;
     }
     try {
@@ -45,7 +52,7 @@ final class Discoverable {
     }
   }
 
-  public static boolean shouldSetToDiscoverable() {
-    return BlueLossSettings.isDiscoverableWhenNotConnectedToNetwork() || Networks.isConnectedToASavedNetwork();
+  public boolean shouldSetToDiscoverable() {
+    return blueLossSettings.isDiscoverableWhenNotConnectedToNetwork() || networks.isConnectedToASavedNetwork();
   }
 }

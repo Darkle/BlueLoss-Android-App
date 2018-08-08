@@ -6,15 +6,18 @@ import android.net.wifi.WifiManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
 public class MainActivity extends AppCompatActivity {
-  public static SharedPreferences appPrefs;
-  public static SharedPreferences prefsNetworks;
-  public static WifiManager wifiManager;
   public static Context appContext;
+  private BlueLossSettings blueLossSettings;
+  private Networks networks;
+  private Discoverable discoverable;
+  private NetworkInfo networkInfo;
 
   private static final String logTag = MainActivity.class.getSimpleName();
 
@@ -23,19 +26,18 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    // We set up some stuff here so that we can access them in non-activity classes.
-    appContext = this.getApplicationContext();
-    appPrefs = getSharedPreferences( "blueloss_settings", MODE_PRIVATE);
-    prefsNetworks = getSharedPreferences( "networks", MODE_PRIVATE);
-    wifiManager = (WifiManager)this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+    appContext = getApplicationContext();
+    blueLossSettings = new BlueLossSettings(this);
+    networkInfo = new NetworkInfo(this, Context.WIFI_SERVICE);
+    networks = new Networks(this, networkInfo);
+    discoverable = new Discoverable(blueLossSettings, networks);
 
     if(!Permissions.permissionsEnabled(MainActivity.this)){
       Permissions.promptForPermissions(MainActivity.this);
     }
-    if(Discoverable.shouldSetToDiscoverable()){
-      Discoverable.setDiscoverable();
+    if(discoverable.shouldSetToDiscoverable()){
+      discoverable.setDiscoverable();
     }
-
     setUpCompoundButtonListeners();
   }
 
@@ -46,53 +48,56 @@ public class MainActivity extends AppCompatActivity {
 
   private void setUpCompoundButtonListeners(){
 
-//    Button saveNetwork = findViewById(R.id.saveButton);
-//    saveNetwork.setOnClickListener(new View.OnClickListener() {
-//      @Override
-//      public void onClick(View v) {
-//        Networks.saveCurrentNetwork();
-//        Log.d(logTag, NetworkInfo.getNetworkInfo() + "");
-//
-//      }
-//    });
-//
-//    Button removeNetwork = findViewById(R.id.removeButton);
-//    removeNetwork.setOnClickListener(new View.OnClickListener() {
-//      @Override
-//      public void onClick(View v) {
-//        Networks.removeNetwork("f8:1a:67:42:f3:e8");
-//      }
-//    });
+    Button saveNetwork = findViewById(R.id.saveButton);
+    saveNetwork.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        networks.saveCurrentNetwork();
+        if(discoverable.shouldSetToDiscoverable()){
+          discoverable.setDiscoverable();
+        }
+        Log.d(logTag, networkInfo.getNetworkInfo() + "");
+
+      }
+    });
+
+    Button removeNetwork = findViewById(R.id.removeButton);
+    removeNetwork.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        networks.removeNetwork("f8:1a:67:42:f3:e8");
+      }
+    });
 
 
     CheckBox discoverableWhenNotConnectedToNetworkCheckBox = findViewById(R.id.discoverableWhenNotConnectedToNetworkCheckBox);
-    discoverableWhenNotConnectedToNetworkCheckBox.setChecked(BlueLossSettings.isDiscoverableWhenNotConnectedToNetwork());
+    discoverableWhenNotConnectedToNetworkCheckBox.setChecked(blueLossSettings.isDiscoverableWhenNotConnectedToNetwork());
 
     discoverableWhenNotConnectedToNetworkCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        BlueLossSettings.setDiscoverableWhenNotConnectedToNetwork(isChecked);
+        blueLossSettings.setDiscoverableWhenNotConnectedToNetwork(isChecked);
       }
     });
 
     CheckBox rollbarLoggingCheckBox = findViewById(R.id.rollbarLoggingCheckBox);
-    rollbarLoggingCheckBox.setChecked(BlueLossSettings.isRollbarLoggingEnabled());
+    rollbarLoggingCheckBox.setChecked(blueLossSettings.isRollbarLoggingEnabled());
 
     rollbarLoggingCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        BlueLossSettings.setRollbarLoggingEnabled(isChecked);
+        blueLossSettings.setRollbarLoggingEnabled(isChecked);
       }
     });
 
 
     Switch enableDisableSwitch = findViewById(R.id.enableDisableSwitch);
-    enableDisableSwitch.setChecked(BlueLossSettings.isBlueLossEnabled());
+    enableDisableSwitch.setChecked(blueLossSettings.isBlueLossEnabled());
 
     enableDisableSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        BlueLossSettings.setBlueLossEnabled(isChecked);
+        blueLossSettings.setBlueLossEnabled(isChecked);
       }
     });
   }

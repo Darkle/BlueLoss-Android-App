@@ -5,9 +5,11 @@ import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 final class Permissions {
   private static final String logTag = Permissions.class.getSimpleName();
+  private static final int exitDelay = (Toast.LENGTH_LONG + 2) * 1000;
 
   public static void promptForPermissions(MainActivity activity){
     // ACCESS_COARSE_LOCATION is considered a dangerous permission, so we need to ask for it:
@@ -27,8 +29,13 @@ final class Permissions {
       return;
     }
     if(grantResults.length < 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED){
+      Utils.showToast("This permission is needed. Exiting BlueLoss.");
       // Close the app if we aren't allowed permission.
-      android.os.Process.killProcess(android.os.Process.myPid());
+      Utils.setTimeout(new Runnable() {
+        public void run() {
+          Utils.forceAppExit();
+        }
+      }, exitDelay);
     }
   }
 

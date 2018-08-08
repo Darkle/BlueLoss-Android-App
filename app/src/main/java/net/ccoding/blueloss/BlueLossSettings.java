@@ -1,33 +1,42 @@
 package net.ccoding.blueloss;
 
 
-final class BlueLossSettings {
+import android.content.Context;
+import android.content.SharedPreferences;
+
+public class BlueLossSettings {
+  private SharedPreferences appPrefs;
+  private static int modePrivate = 0;
   private static final String logTag = BlueLossSettings.class.getSimpleName();
 
-  public static boolean isBlueLossEnabled() {
-    return MainActivity.appPrefs.getBoolean("bluelossEnabled",true);
+  public BlueLossSettings(Context context) {
+    this.appPrefs = context.getSharedPreferences( "blueloss_settings", modePrivate);
   }
 
-  public static void setBlueLossEnabled(boolean blueLossEnabled) {
-    MainActivity.appPrefs.edit().putBoolean("bluelossEnabled", blueLossEnabled).apply();
+  public boolean isBlueLossEnabled() {
+    return appPrefs.getBoolean("bluelossEnabled",true);
   }
 
-  public static boolean isDiscoverableWhenNotConnectedToNetwork() {
-    return MainActivity.appPrefs.getBoolean("discoverableWhenNotConnectedToNetwork",false);
+  public void setBlueLossEnabled(boolean blueLossEnabled) {
+    appPrefs.edit().putBoolean("bluelossEnabled", blueLossEnabled).apply();
   }
 
-  public static void setDiscoverableWhenNotConnectedToNetwork(boolean discoverableWhenNotConnectedToNetwork) {
-    MainActivity.appPrefs.edit().putBoolean(
+  public boolean isDiscoverableWhenNotConnectedToNetwork() {
+    return appPrefs.getBoolean("discoverableWhenNotConnectedToNetwork",false);
+  }
+
+  public void setDiscoverableWhenNotConnectedToNetwork(boolean discoverableWhenNotConnectedToNetwork) {
+    appPrefs.edit().putBoolean(
         "discoverableWhenNotConnectedToNetwork",
         discoverableWhenNotConnectedToNetwork
     ).apply();
   }
 
-  public static boolean isRollbarLoggingEnabled() {
-    return MainActivity.appPrefs.getBoolean("rollbarLoggingEnabled",true);
+  public boolean isRollbarLoggingEnabled() {
+    return appPrefs.getBoolean("rollbarLoggingEnabled",true);
   }
 
-  public static void setRollbarLoggingEnabled(boolean rollbarLoggingEnabled) {
-    MainActivity.appPrefs.edit().putBoolean("rollbarLoggingEnabled", rollbarLoggingEnabled).apply();
+  public void setRollbarLoggingEnabled(boolean rollbarLoggingEnabled) {
+    appPrefs.edit().putBoolean("rollbarLoggingEnabled", rollbarLoggingEnabled).apply();
   }
 }
