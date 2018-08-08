@@ -3,7 +3,6 @@ package net.ccoding.blueloss;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 
 public class OnBootReceiver extends BroadcastReceiver {
@@ -13,7 +12,7 @@ public class OnBootReceiver extends BroadcastReceiver {
   @Override
   public void onReceive(Context context, Intent intent) {
     BlueLossSettings blueLossSettings = new BlueLossSettings(context);
-    NetworkInfo networkInfo = new NetworkInfo(context.getApplicationContext(), Context.WIFI_SERVICE);
+    NetworkInformation networkInfo = new NetworkInformation(context.getApplicationContext());
     Networks networks = new Networks(context, networkInfo);
     Discoverable discoverable = new Discoverable(blueLossSettings, networks);
 

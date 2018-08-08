@@ -1,20 +1,19 @@
 package net.ccoding.blueloss;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class NetworkInfo {
+public class NetworkInformation {
   private WifiManager wifiManager;
 
-//  public NetworkInfo(WifiManager wifiManager) {
-//    this.wifiManager = wifiManager;
-//  }
-  public NetworkInfo(Context context, String wifiService) {
-    this.wifiManager = (WifiManager)context.getApplicationContext().getSystemService(wifiService);
+  public NetworkInformation(Context context) {
+    this.wifiManager = (WifiManager)context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
   }
 
   public Map<String,String> getNetworkInfo(){

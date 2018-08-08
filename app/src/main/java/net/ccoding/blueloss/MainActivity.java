@@ -1,8 +1,6 @@
 package net.ccoding.blueloss;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.net.wifi.WifiManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
   private BlueLossSettings blueLossSettings;
   private Networks networks;
   private Discoverable discoverable;
-  private NetworkInfo networkInfo;
+  private NetworkInformation networkInfo;
 
   private static final String logTag = MainActivity.class.getSimpleName();
 
@@ -28,10 +26,11 @@ public class MainActivity extends AppCompatActivity {
 
     appContext = getApplicationContext();
     blueLossSettings = new BlueLossSettings(this);
-    networkInfo = new NetworkInfo(this, Context.WIFI_SERVICE);
+    networkInfo = new NetworkInformation(this);
     networks = new Networks(this, networkInfo);
     discoverable = new Discoverable(blueLossSettings, networks);
 
+    Log.d(logTag, networkInfo.getNetworkInfo() +"");
     if(!Permissions.permissionsEnabled(MainActivity.this)){
       Permissions.promptForPermissions(MainActivity.this);
     }

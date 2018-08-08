@@ -14,10 +14,10 @@ public class Networks {
   private static final Type typeOfHashMap = new TypeToken<Map<String, String>>() { }.getType();  // https://stackoverflow.com/a/12117517/2785644
   private static final String logTag = MainActivity.class.getSimpleName();
   private SharedPreferences prefsNetworks;
-  private NetworkInfo networkInfo;
+  private NetworkInformation networkInfo;
   private static int modePrivate = 0;
 
-  public Networks(Context context, NetworkInfo networkInfo) {
+  public Networks(Context context, NetworkInformation networkInfo) {
     this.prefsNetworks = context.getSharedPreferences( "networks", modePrivate);
     this.networkInfo = networkInfo;
   }
