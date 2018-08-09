@@ -8,8 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 public class NetworksViewActivity extends AppCompatActivity {
-  private static final String logTag = NetworksViewActivity.class.getSimpleName();
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

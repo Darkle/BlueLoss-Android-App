@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 final class Utils {
-  private static final String logTag = Utils.class.getSimpleName();
 
   public interface TaskHandle {
     void invalidate();
@@ -26,11 +25,6 @@ final class Utils {
     return entry;
   }
 
-  public static void showToast(String toastMessage){
-    Toast toast = Toast.makeText(MainActivity.appContext, toastMessage, Toast.LENGTH_LONG);
-    toast.show();
-  }
-
   // via http://peatiscoding.me/geek-stuff/quick-note/javascript-settimeout-android-java/
   public static TaskHandle setTimeout(final Runnable r, long delay) {
     final Handler h = new Handler();
@@ -41,6 +35,10 @@ final class Utils {
         h.removeCallbacks(r);
       }
     };
+  }
+
+  public static boolean isNougatOrAbove(){
+    return android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N;
   }
 
   public static void forceAppExit(){

@@ -6,9 +6,6 @@ import android.content.Intent;
 
 
 public class OnBootReceiver extends BroadcastReceiver {
-
-  private static final String logTag = OnBootReceiver.class.getSimpleName();
-
   @Override
   public void onReceive(Context context, Intent intent) {
     BlueLossSettings blueLossSettings = new BlueLossSettings(context);
@@ -19,5 +16,11 @@ public class OnBootReceiver extends BroadcastReceiver {
     if(discoverable.shouldSetToDiscoverable()){
       discoverable.setDiscoverable();
     }
+    // We only need to use Job Schedulers in a service for Nougat and above.
+    // For devices using Android versions below Nougat we are using a broadcast receiver.
+//    if(Utils.isNougatOrAbove()) {
+//      NetworkCheckService networkCheckService = new NetworkCheckService();
+//      networkCheckService.enqueueWork(context, new Intent());
+//    }
   }
 }

@@ -4,18 +4,22 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Networks {
-  private static final String toastMessageForNullBSSID = "The current network returned null for the bssid, so we're not saving it. Sorry :-(";
   private static final Type typeOfHashMap = new TypeToken<Map<String, String>>() { }.getType();  // https://stackoverflow.com/a/12117517/2785644
-  private static final String logTag = MainActivity.class.getSimpleName();
   private SharedPreferences prefsNetworks;
   private NetworkInformation networkInfo;
   private static int modePrivate = 0;
+
+  {
+    Logger.addLogAdapter(new AndroidLogAdapter());
+  }
 
   public Networks(Context context, NetworkInformation networkInfo) {
     this.prefsNetworks = context.getSharedPreferences( "networks", modePrivate);
@@ -27,6 +31,7 @@ public class Networks {
     String bssid = networkEntry.getKey();
 
     if(bssid == null){
+      Logger.d("isConnectedToASavedNetwork: BSSID was null");
       return false;
     }
     return networkFoundInSavedNetworks(bssid);
@@ -37,7 +42,6 @@ public class Networks {
     String bssid = networkEntry.getKey();
     String ssid = networkEntry.getValue();
     if(bssid == null){
-      Utils.showToast(toastMessageForNullBSSID);
       return;
     }
     saveNetwork(bssid, ssid);

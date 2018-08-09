@@ -1,48 +1,89 @@
 package net.ccoding.blueloss;
 
-import android.content.Context;
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.Toast;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 
 public class MainActivity extends AppCompatActivity {
-  public static Context appContext;
   private BlueLossSettings blueLossSettings;
   private Networks networks;
   private Discoverable discoverable;
   private NetworkInformation networkInfo;
+  private NetworkCheckService networkCheckService;
+  private static final int exitDelay = (Toast.LENGTH_LONG + 2) * 1000;
 
-  private static final String logTag = MainActivity.class.getSimpleName();
+  {
+    Logger.addLogAdapter(new AndroidLogAdapter());
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    appContext = getApplicationContext();
     blueLossSettings = new BlueLossSettings(this);
     networkInfo = new NetworkInformation(this);
     networks = new Networks(this, networkInfo);
     discoverable = new Discoverable(blueLossSettings, networks);
 
-    Log.d(logTag, networkInfo.getNetworkInfo() +"");
-    if(!Permissions.permissionsEnabled(MainActivity.this)){
-      Permissions.promptForPermissions(MainActivity.this);
+    if(!permissionsEnabled(MainActivity.this)){
+      promptForPermissions(MainActivity.this);
     }
     if(discoverable.shouldSetToDiscoverable()){
       discoverable.setDiscoverable();
     }
     setUpCompoundButtonListeners();
+
+    // We only need to use Job Schedulers in a service for Nougat and above.
+    // For devices using Android versions below Nougat we are using a broadcast receiver.
+//    if(Utils.isNougatOrAbove()) {
+      networkCheckService = new NetworkCheckService();
+      networkCheckService.enqueueWork(this, new Intent());
+//    }
   }
 
   @Override
   public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-    Permissions.handleRequestResult(requestCode, permissions, grantResults);
+    if(requestCode != 1){
+      return;
+    }
+    if(grantResults.length < 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED){
+      Toast toast = Toast.makeText(getApplicationContext(), "This permission is needed. Exiting BlueLoss.", Toast.LENGTH_LONG);
+      toast.show();
+      // Close the app if we aren't allowed permission.
+      Utils.setTimeout(new Runnable() {
+        public void run() {
+          Utils.forceAppExit();
+        }
+      }, exitDelay);
+    }
+  }
+
+  public static void promptForPermissions(MainActivity activity){
+    // ACCESS_COARSE_LOCATION is considered a dangerous permission, so we need to ask for it:
+    // https://developer.android.com/guide/topics/permissions/overview#permission-groups
+    ActivityCompat.requestPermissions(
+        activity,
+        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+        1
+    );
+  }
+
+  public static boolean permissionsEnabled(MainActivity activity){
+    return ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION)
+        == PackageManager.PERMISSION_GRANTED;
   }
 
   private void setUpCompoundButtonListeners(){
@@ -55,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         if(discoverable.shouldSetToDiscoverable()){
           discoverable.setDiscoverable();
         }
-        Log.d(logTag, networkInfo.getNetworkInfo() + "");
+        Logger.d(networkInfo.getNetworkInfo());
 
       }
     });

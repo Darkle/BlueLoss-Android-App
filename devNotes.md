@@ -23,6 +23,8 @@ configurations.all {
 ```
 to the build.gradle file
 
+If intellij is really slow, you may want to try some of these: https://stackoverflow.com/questions/30817871/android-studio-is-slow-how-to-speed-up/32366177
+
 Note: when you're testing the app, it seems to stay broadcasting even when you close the app, so you may need to disable then re-enable blueloss everytime you reload the app on the phone in dev.
 
 To view logcat via the terminal, you can run `adb shell`, then type in `logcat` and press enter and that will show you the full log.
@@ -30,3 +32,5 @@ To view logcat via the terminal, you can run `adb shell`, then type in `logcat` 
 To uninstall your apk via the terminal, run `adb uninstall your.package.name`
 
 To install your apk via the terminal, tun `adb install /path/to/apk-debug.apk`
+
+We use the broadcast receiver for detecting network changes in Android Marshmellow (6) and below. We use Job Schedulers to check for network changes in Android Nougat(7) and above.

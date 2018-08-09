@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 public class BlueLossSettings {
   private SharedPreferences appPrefs;
   private static int modePrivate = 0;
-  private static final String logTag = BlueLossSettings.class.getSimpleName();
 
   public BlueLossSettings(Context context) {
     this.appPrefs = context.getSharedPreferences( "blueloss_settings", modePrivate);
