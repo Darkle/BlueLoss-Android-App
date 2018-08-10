@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.Logger;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -17,10 +15,6 @@ public class Networks {
   private NetworkInformation networkInfo;
   private static int modePrivate = 0;
 
-  {
-    Logger.addLogAdapter(new AndroidLogAdapter());
-  }
-
   public Networks(Context context, NetworkInformation networkInfo) {
     this.prefsNetworks = context.getSharedPreferences( "networks", modePrivate);
     this.networkInfo = networkInfo;
@@ -31,7 +25,6 @@ public class Networks {
     String bssid = networkEntry.getKey();
 
     if(bssid == null){
-      Logger.d("isConnectedToASavedNetwork: BSSID was null");
       return false;
     }
     return networkFoundInSavedNetworks(bssid);

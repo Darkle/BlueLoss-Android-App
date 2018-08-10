@@ -1,9 +1,7 @@
 package net.ccoding.blueloss;
 
 import android.os.Handler;
-import android.widget.Toast;
 
-import java.lang.reflect.Method;
 import java.util.AbstractMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -37,8 +35,12 @@ final class Utils {
     };
   }
 
-  public static boolean isNougatOrAbove(){
-    return android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N;
+//  public static boolean isNougatOrAbove(){
+//    return android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N;
+//  }
+
+  public static boolean isOreoOrAbove(){
+    return android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O;
   }
 
   public static void forceAppExit(){

@@ -13,26 +13,20 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.Logger;
 
 public class MainActivity extends AppCompatActivity {
   private BlueLossSettings blueLossSettings;
   private Networks networks;
   private Discoverable discoverable;
   private NetworkInformation networkInfo;
-  private NetworkCheckService networkCheckService;
   private static final int exitDelay = (Toast.LENGTH_LONG + 2) * 1000;
 
-  {
-    Logger.addLogAdapter(new AndroidLogAdapter());
-  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-
+//    Logger.addLogAdapter(new AndroidLogAdapter());
     blueLossSettings = new BlueLossSettings(this);
     networkInfo = new NetworkInformation(this);
     networks = new Networks(this, networkInfo);
@@ -46,11 +40,21 @@ public class MainActivity extends AppCompatActivity {
     }
     setUpCompoundButtonListeners();
 
-    // We only need to use Job Schedulers in a service for Nougat and above.
-    // For devices using Android versions below Nougat we are using a broadcast receiver.
-//    if(Utils.isNougatOrAbove()) {
-      networkCheckService = new NetworkCheckService();
-      networkCheckService.enqueueWork(this, new Intent());
+//    Intent intent = new Intent(this, NetworkCheckService.class);
+//    if(Utils.isOreoOrAbove()){
+//      startForegroundService(intent);
+//    }
+//    else{
+//      MyLogger.d("Else 1");
+//      startService(intent);
+//    }
+//    Intent intent2 = new Intent(this, NetworkCheckService.class);
+//    if(Utils.isOreoOrAbove()){
+//      startForegroundService(intent2);
+//    }
+//    else{
+//      MyLogger.d("Else 2");
+//      startService(intent2);
 //    }
   }
 
@@ -96,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         if(discoverable.shouldSetToDiscoverable()){
           discoverable.setDiscoverable();
         }
-        Logger.d(networkInfo.getNetworkInfo());
+        MyLogger.d(networkInfo.getNetworkInfo());
 
       }
     });
