@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
   private NetworkInformation networkInfo;
   private static final int exitDelay = (Toast.LENGTH_LONG + 2) * 1000;
 
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -40,22 +39,22 @@ public class MainActivity extends AppCompatActivity {
     }
     setUpCompoundButtonListeners();
 
-//    Intent intent = new Intent(this, NetworkCheckService.class);
-//    if(Utils.isOreoOrAbove()){
-//      startForegroundService(intent);
-//    }
-//    else{
-//      MyLogger.d("Else 1");
-//      startService(intent);
-//    }
-//    Intent intent2 = new Intent(this, NetworkCheckService.class);
-//    if(Utils.isOreoOrAbove()){
-//      startForegroundService(intent2);
-//    }
-//    else{
-//      MyLogger.d("Else 2");
-//      startService(intent2);
-//    }
+    Intent intent = new Intent(this, DiscoverableService.class);
+    if(Utils.isOreoOrAbove()){
+      startForegroundService(intent);
+    }
+    else{
+      MyLogger.d("Else 1");
+      startService(intent);
+    }
+    Intent intent2 = new Intent(this, DiscoverableService.class);
+    if(Utils.isOreoOrAbove()){
+      startForegroundService(intent2);
+    }
+    else{
+      MyLogger.d("Else 2");
+      startService(intent2);
+    }
   }
 
   @Override
@@ -112,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
         networks.removeNetwork("f8:1a:67:42:f3:e8");
       }
     });
-
 
     CheckBox discoverableWhenNotConnectedToNetworkCheckBox = findViewById(R.id.discoverableWhenNotConnectedToNetworkCheckBox);
     discoverableWhenNotConnectedToNetworkCheckBox.setChecked(blueLossSettings.isDiscoverableWhenNotConnectedToNetwork());

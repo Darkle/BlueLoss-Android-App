@@ -9,17 +9,16 @@ import android.support.annotation.Nullable;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
-public class NetworkCheckService extends Service {
-  private boolean networkCheckServiceRunning = false;
+public class DiscoverableService extends Service {
+  private boolean discoverableServiceRunning = false;
 
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
     MyLogger.d("onStartCommand called");
-    MyLogger.d("networkStatusServiceRunning : " + networkCheckServiceRunning);
+    MyLogger.d("networkStatusServiceRunning : " + discoverableServiceRunning);
 
-    if(!networkCheckServiceRunning){
-      networkCheckServiceRunning = true;
+    if(!discoverableServiceRunning){
+      discoverableServiceRunning = true;
 //      if(Utils.isOreoOrAbove()){
 //        // do the notification stuff!!!!!!!!!!!! for later androids
 //      }
