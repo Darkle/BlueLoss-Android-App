@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-//    Logger.addLogAdapter(new AndroidLogAdapter());
     blueLossSettings = new BlueLossSettings(this);
     networkInfo = new NetworkInformation(this);
     networks = new Networks(this, networkInfo);
@@ -34,9 +33,9 @@ public class MainActivity extends AppCompatActivity {
     if(!permissionsEnabled(MainActivity.this)){
       promptForPermissions(MainActivity.this);
     }
-    if(discoverable.shouldSetToDiscoverable()){
-      discoverable.setDiscoverable();
-    }
+
+    discoverable.toggleDiscoverable();
+
     setUpCompoundButtonListeners();
 
     Intent intent = new Intent(this, DiscoverableService.class);
@@ -44,16 +43,7 @@ public class MainActivity extends AppCompatActivity {
       startForegroundService(intent);
     }
     else{
-      MyLogger.d("Else 1");
       startService(intent);
-    }
-    Intent intent2 = new Intent(this, DiscoverableService.class);
-    if(Utils.isOreoOrAbove()){
-      startForegroundService(intent2);
-    }
-    else{
-      MyLogger.d("Else 2");
-      startService(intent2);
     }
   }
 
@@ -91,24 +81,25 @@ public class MainActivity extends AppCompatActivity {
 
   private void setUpCompoundButtonListeners(){
 
-    Button saveNetwork = findViewById(R.id.saveButton);
-    saveNetwork.setOnClickListener(new View.OnClickListener() {
+    Switch enableDisableSwitch = findViewById(R.id.enableDisableSwitch);
+    enableDisableSwitch.setChecked(blueLossSettings.isBlueLossEnabled());
+
+    enableDisableSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
-      public void onClick(View v) {
-        networks.saveCurrentNetwork();
-        if(discoverable.shouldSetToDiscoverable()){
-          discoverable.setDiscoverable();
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        blueLossSettings.setBlueLossEnabled(isChecked);
+        /*
+          Inside of toggleDiscoverable() we return if BlueLoss is disabled. We do this because otherwise
+          we could interfere with users when they are using the Android BlueTooth settings page (as the device
+          needs to be discoverable when that setting page is open) - because of that, we need to specifically
+          call setUnDiscoverable() here, otherwise it won't get called.
+        */
+        if(!isChecked){
+          discoverable.setUnDiscoverable();
         }
-        MyLogger.d(networkInfo.getNetworkInfo());
-
-      }
-    });
-
-    Button removeNetwork = findViewById(R.id.removeButton);
-    removeNetwork.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        networks.removeNetwork("f8:1a:67:42:f3:e8");
+        else{
+          discoverable.toggleDiscoverable();
+        }
       }
     });
 
@@ -132,15 +123,24 @@ public class MainActivity extends AppCompatActivity {
       }
     });
 
-
-    Switch enableDisableSwitch = findViewById(R.id.enableDisableSwitch);
-    enableDisableSwitch.setChecked(blueLossSettings.isBlueLossEnabled());
-
-    enableDisableSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    Button saveNetwork = findViewById(R.id.saveButton);
+    saveNetwork.setOnClickListener(new View.OnClickListener() {
       @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        blueLossSettings.setBlueLossEnabled(isChecked);
+      public void onClick(View v) {
+        networks.saveCurrentNetwork();
+        discoverable.toggleDiscoverable();
+        MyLogger.d(networkInfo.getNetworkInfo());
+
       }
     });
+
+    Button removeNetwork = findViewById(R.id.removeButton);
+    removeNetwork.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        networks.removeNetwork("f8:1a:67:42:f3:e8");
+      }
+    });
+
   }
 }

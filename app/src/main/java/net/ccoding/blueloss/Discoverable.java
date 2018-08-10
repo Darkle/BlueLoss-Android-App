@@ -40,10 +40,7 @@ public class Discoverable {
     }
   }
 
-  public void setDiscoverable(){
-    if(!blueLossSettings.isBlueLossEnabled()){
-      return;
-    }
+  private void setDiscoverable(){
     try {
       setScanMode.invoke(mBluetoothAdapter, BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE, scanTimeInSeconds);
     } catch (Exception e) {
@@ -51,7 +48,25 @@ public class Discoverable {
     }
   }
 
-  public boolean shouldSetToDiscoverable() {
-    return blueLossSettings.isDiscoverableWhenNotConnectedToNetwork() || networks.isConnectedToASavedNetwork();
+  private boolean shouldSetToDiscoverable() {
+    return Bluetooth.isEnabled() &&
+        (blueLossSettings.isDiscoverableWhenNotConnectedToNetwork() || networks.isConnectedToASavedNetwork());
+  }
+
+  public void toggleDiscoverable(){
+    /*
+      We return here if BlueLoss is disabled. We do this because otherwise we could interfere with users
+      when they are using the Android BlueTooth settings page (as the device needs to be discoverable
+      when that setting page is open).
+    */
+    if(!blueLossSettings.isBlueLossEnabled()){
+      return;
+    }
+    if(shouldSetToDiscoverable()){
+      setDiscoverable();
+    }
+    else {
+      setUnDiscoverable();
+    }
   }
 }

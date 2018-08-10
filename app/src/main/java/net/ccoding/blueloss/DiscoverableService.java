@@ -16,6 +16,7 @@ public class DiscoverableService extends Service {
   public int onStartCommand(Intent intent, int flags, int startId) {
     MyLogger.d("onStartCommand called");
     MyLogger.d("networkStatusServiceRunning : " + discoverableServiceRunning);
+    MyLogger.d(this);
 
     if(!discoverableServiceRunning){
       discoverableServiceRunning = true;
@@ -35,12 +36,7 @@ public class DiscoverableService extends Service {
           @Override
           public void run() {
             MyLogger.d("After TimerTask timeout");
-            if(discoverable.shouldSetToDiscoverable()){
-              discoverable.setDiscoverable();
-            }
-            else {
-              discoverable.setUnDiscoverable();
-            }
+            discoverable.toggleDiscoverable();
           }
         },
         5000,
