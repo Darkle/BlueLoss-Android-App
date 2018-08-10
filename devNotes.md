@@ -1,12 +1,13 @@
 
+Don't use the Android Studio (IntelliJ) emulator as that makes my system hang and crash and makes it so that I have to reboot.
+
 Remember to first enable USB debugging on the phone you are testing on: https://www.kingoapp.com/root-tutorials/how-to-enable-usb-debugging-mode-on-android.htm
 
 We are targeting Android 5.0 (Lollipop): https://developer.android.com/about/versions/android-5.0#BluetoothBroadcasting
 
 For setting up IntelliJ, you may need to set the Gradle settings like the "Gradle JVM" set it to Use JAVA_HOME (https://stackoverflow.com/a/36539783/2785644) and also to "Use local gradle distribution" 
 
-Then go to Settings->Appearance & Behaviour->System Settings->Android SDK and install the Lollipop 5.0 SDK (API Level 21) if its not installed & also SDK level 27 for compat stuff
-- also remove any other api versions that are there as they will cause minor issues
+Then go to Settings->Appearance & Behaviour->System Settings->Android SDK and check if anything needs to be installed or removed there.
 - also if you are running on a PC that supports Intel Virtualization Technology, you should also make sure to install the Intel x86 Emulator Accelerator in the SDK Tools tab there as that will make the Emulator run faster. You can use this tool to check if you support it: https://downloadcenter.intel.com/download/7838/Intel-Processor-Identification-Utility-Windows-Version - you need YES for the two Virtualization stuff - e.g. https://imgur.com/a/8FHVyUd
 
 Then set up the SDK:
