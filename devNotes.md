@@ -8,7 +8,7 @@ We are targeting Android 5.0 (Lollipop): https://developer.android.com/about/ver
 For setting up IntelliJ, you may need to set the Gradle settings like the "Gradle JVM" set it to Use JAVA_HOME (https://stackoverflow.com/a/36539783/2785644) and also to "Use local gradle distribution" 
 
 Then go to Settings->Appearance & Behaviour->System Settings->Android SDK and check if anything needs to be installed or removed there.
-- also if you are running on a PC that supports Intel Virtualization Technology, you should also make sure to install the Intel x86 Emulator Accelerator in the SDK Tools tab there as that will make the Emulator run faster. You can use this tool to check if you support it: https://downloadcenter.intel.com/download/7838/Intel-Processor-Identification-Utility-Windows-Version - you need YES for the two Virtualization stuff - e.g. https://imgur.com/a/8FHVyUd
+- also if you are running on a PC that supports Intel Virtualization Technology, you should also make sure to install the Intel x86 Emulator Accelerator in the SDK Tools tab there as that will make the Emulator run faster. 
 
 Then set up the SDK:
  - If the yellow bar up top is showing, click on the Setup SDK in the yellow bar top right, then if Android API 21 Platform isnt there, you will need to add it manually, click on the plus icon and select Android SDK and add C:\Users\Coop\AppData\Local\Android\Sdk to the folder selector window path and then click ok and then select version 21.
@@ -35,3 +35,6 @@ To uninstall your apk via the terminal, run `adb uninstall your.package.name`
 To install your apk via the terminal, tun `adb install /path/to/apk-debug.apk`
 
 We use the broadcast receiver for detecting network changes in Android Marshmellow (6) and below. We use Job Schedulers to check for network changes in Android Nougat(7) and above.
+
+The built in android emulator in IntelliJ seems to crash my system, so try using Androidx86 with virtualbox to test on Oreo. 
+-- to get the virtualbox emulator to show up as a device when you click run in IntelliJ, first on the commandline, type `adb connect 192.168.1.5:5555` and change the IP to whatever the ip is of the virtualbox vm.
