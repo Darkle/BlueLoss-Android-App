@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
   private Discoverable discoverable;
   private NetworkInformation networkInfo;
   private static final int exitDelay = (Toast.LENGTH_LONG + 2) * 1000;
+  private static final int permissionRequestCode = 1;
   private static View mainActivityView;
   public Intent discoverableService;
 
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
   @Override
   public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-    if(requestCode != 1){
+    if(requestCode != permissionRequestCode){
       return;
     }
     if(grantResults.length < 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED){
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityCompat.requestPermissions(
         activity,
         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-        1
+        permissionRequestCode
     );
   }
 
