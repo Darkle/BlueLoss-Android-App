@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity" android:background="@color/bluelossOffWhite">
+        tools:context=".MainActivity" android:background="@color/bluelossGreyBackground">
 
     <Switch
             android:text="Enable BlueLoss"
@@ -44,7 +44,7 @@
             android:divider="@drawable/networks_button_divider_color"
     />
     <Button
-            android:text="Networks "
+            android:text="Networks"
             android:layout_width="0dp"
             android:id="@+id/networksButton" android:layout_weight="1"
             app:layout_constraintEnd_toEndOf="parent"
