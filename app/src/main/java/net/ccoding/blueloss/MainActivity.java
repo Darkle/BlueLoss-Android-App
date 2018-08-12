@@ -115,13 +115,13 @@ public class MainActivity extends AppCompatActivity {
       }
     });
 
-    CheckBox discoverableWhenNotConnectedToNetworkCheckBox = findViewById(R.id.discoverableWhenNotConnectedToNetworkCheckBox);
-    discoverableWhenNotConnectedToNetworkCheckBox.setChecked(blueLossSettings.isDiscoverableWhenNotConnectedToNetwork());
+    CheckBox forceDiscoverableCheckBox = findViewById(R.id.forceDiscoverableCheckBox);
+    forceDiscoverableCheckBox.setChecked(blueLossSettings.forceDiscoverableIsEnabled());
 
-    discoverableWhenNotConnectedToNetworkCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    forceDiscoverableCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        blueLossSettings.setDiscoverableWhenNotConnectedToNetwork(isChecked);
+        blueLossSettings.setForceDiscoverable(isChecked);
         discoverable.toggleDiscoverable();
       }
     });

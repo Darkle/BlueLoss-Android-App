@@ -19,14 +19,14 @@ public class BlueLossSettings {
     appPrefs.edit().putBoolean("bluelossEnabled", blueLossEnabled).apply();
   }
 
-  public boolean isDiscoverableWhenNotConnectedToNetwork() {
-    return appPrefs.getBoolean("discoverableWhenNotConnectedToNetwork",false);
+  public boolean forceDiscoverableIsEnabled() {
+    return appPrefs.getBoolean("forceDiscoverable",false);
   }
 
-  public void setDiscoverableWhenNotConnectedToNetwork(boolean discoverableWhenNotConnectedToNetwork) {
+  public void setForceDiscoverable(boolean forceDiscoverable) {
     appPrefs.edit().putBoolean(
-        "discoverableWhenNotConnectedToNetwork",
-        discoverableWhenNotConnectedToNetwork
+        "forceDiscoverable",
+        forceDiscoverable
     ).apply();
   }
 

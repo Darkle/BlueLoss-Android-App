@@ -50,7 +50,7 @@ public class Discoverable {
 
   private boolean shouldSetToDiscoverable() {
     return Bluetooth.isEnabled() &&
-        (blueLossSettings.isDiscoverableWhenNotConnectedToNetwork() || networks.isConnectedToASavedNetwork());
+        (blueLossSettings.forceDiscoverableIsEnabled() || networks.isConnectedToASavedNetwork());
   }
 
   public void toggleDiscoverable(){
