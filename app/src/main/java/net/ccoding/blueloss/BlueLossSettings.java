@@ -24,10 +24,7 @@ public class BlueLossSettings {
   }
 
   public void setForceDiscoverable(boolean forceDiscoverable) {
-    appPrefs.edit().putBoolean(
-        "forceDiscoverable",
-        forceDiscoverable
-    ).apply();
+    appPrefs.edit().putBoolean("forceDiscoverable", forceDiscoverable).apply();
   }
 
   public boolean isBugsnagLoggingEnabled() {
