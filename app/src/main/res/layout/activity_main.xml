@@ -11,17 +11,25 @@
             android:text="Enable BlueLoss"
             android:layout_width="0dp"
             android:layout_height="42dp"
-            android:id="@+id/enableDisableSwitch" android:layout_marginTop="24dp"
+            android:id="@+id/enableDisableSwitch" android:layout_marginTop="32dp"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="24dp" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="24dp"/>
+            android:layout_marginStart="32dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="32dp"/>
     <CheckBox
             android:text="Force always discoverable"
             android:layout_width="0dp"
             android:layout_height="43dp"
             android:id="@+id/discoverableWhenNotConnectedToNetworkCheckBox" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="24dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="24dp" android:layout_marginTop="24dp"
+            android:layout_marginEnd="32dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="32dp" android:layout_marginTop="32dp"
             app:layout_constraintTop_toBottomOf="@+id/enableDisableSwitch"/>
+    <CheckBox
+            android:text="Log errors to bugsnag.com"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/bugsnagLoggingCheckBox" android:layout_marginTop="32dp"
+            app:layout_constraintTop_toBottomOf="@+id/discoverableWhenNotConnectedToNetworkCheckBox"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="32dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="32dp"/>
 
 </android.support.constraint.ConstraintLayout>

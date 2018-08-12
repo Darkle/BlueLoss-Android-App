@@ -29,32 +29,34 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-//    mainActivityView = findViewById(android.R.id.content);
-//    blueLossSettings = new BlueLossSettings(this);
-//    networkInfo = new NetworkInformation(this);
-//    networks = new Networks(this, networkInfo);
-//    discoverable = new Discoverable(blueLossSettings, networks);
-//    discoverableService = new Intent(this, DiscoverableService.class);
-//
-//    if(!permissionsEnabled(MainActivity.this)){
-//      promptForPermissions(MainActivity.this);
-//    }
-//
-//    setUpCompoundButtonListeners();
-//
-//    discoverable.toggleDiscoverable();
-//
-//    if(Utils.isOreoOrAbove()){
-//      startForegroundService(discoverableService);
-//    }
-//    else{
-//      startService(discoverableService);
-//    }
-
-
     Bugsnag.init(this);
-    Bugsnag.notify(new RuntimeException("Test error new import key idea"));
-//    throw new RuntimeException("Fatal error in MainActivity" );
+
+    mainActivityView = findViewById(android.R.id.content);
+    blueLossSettings = new BlueLossSettings(this);
+    networkInfo = new NetworkInformation(this);
+    networks = new Networks(this, networkInfo);
+    discoverable = new Discoverable(blueLossSettings, networks);
+    discoverableService = new Intent(this, DiscoverableService.class);
+
+    if(!blueLossSettings.isBugsnagLoggingEnabled()){
+      Bugsnag.disableExceptionHandler();
+    }
+
+    if(!permissionsEnabled(MainActivity.this)){
+      promptForPermissions(MainActivity.this);
+    }
+
+    setUpCompoundButtonListeners();
+
+    discoverable.toggleDiscoverable();
+
+    if(Utils.isOreoOrAbove()){
+      startForegroundService(discoverableService);
+    }
+    else{
+      startService(discoverableService);
+    }
+
   }
 
   @Override
@@ -123,6 +125,23 @@ public class MainActivity extends AppCompatActivity {
         discoverable.toggleDiscoverable();
       }
     });
+
+    CheckBox bugsnagLoggingCheckBox = findViewById(R.id.bugsnagLoggingCheckBox);
+    bugsnagLoggingCheckBox.setChecked(blueLossSettings.isBugsnagLoggingEnabled());
+
+    bugsnagLoggingCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        blueLossSettings.setBugsnagLoggingEnabled(isChecked);
+        if(isChecked){
+          Bugsnag.enableExceptionHandler();
+        }
+        else{
+          Bugsnag.disableExceptionHandler();
+        }
+      }
+    });
+
 
   }
 }

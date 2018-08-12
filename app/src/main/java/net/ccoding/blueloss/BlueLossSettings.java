@@ -30,11 +30,11 @@ public class BlueLossSettings {
     ).apply();
   }
 
-  public boolean isRollbarLoggingEnabled() {
-    return appPrefs.getBoolean("rollbarLoggingEnabled",true);
+  public boolean isBugsnagLoggingEnabled() {
+    return appPrefs.getBoolean("bugsnagLoggingEnabled",true);
   }
 
-  public void setRollbarLoggingEnabled(boolean rollbarLoggingEnabled) {
-    appPrefs.edit().putBoolean("rollbarLoggingEnabled", rollbarLoggingEnabled).apply();
+  public void setBugsnagLoggingEnabled(boolean bugsnagLoggingEnabled) {
+    appPrefs.edit().putBoolean("bugsnagLoggingEnabled", bugsnagLoggingEnabled).apply();
   }
 }
