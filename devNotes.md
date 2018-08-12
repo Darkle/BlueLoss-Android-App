@@ -7,7 +7,7 @@ Don't use the Android Studio (IntelliJ) emulator as that makes my system hang an
 
 Remember to first enable USB debugging on the phone you are testing on: https://www.kingoapp.com/root-tutorials/how-to-enable-usb-debugging-mode-on-android.htm
 
-We are targeting Android 5.0 (Lollipop): https://developer.android.com/about/versions/android-5.0#BluetoothBroadcasting
+We are targeting Android 5.0 Lollipop (SDK 21) and higher.
 
 For setting up IntelliJ, you may need to set the Gradle settings like the "Gradle JVM" set it to Use JAVA_HOME (https://stackoverflow.com/a/36539783/2785644) and also to "Use local gradle distribution" 
 

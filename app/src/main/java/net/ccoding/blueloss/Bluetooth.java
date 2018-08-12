@@ -10,3 +10,4 @@ final public class Bluetooth {
         mBluetoothAdapter.getState() == BluetoothAdapter.STATE_ON;
   }
 }
+
