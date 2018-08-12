@@ -2,6 +2,7 @@ package net.ccoding.blueloss;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.design.widget.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -14,6 +15,8 @@ public class Networks {
   private SharedPreferences prefsNetworks;
   private NetworkInformation networkInfo;
   private static int modePrivate = 0;
+  private String bssidNullSnackBarMessage = "The current network returned null for it's BSSID, so we are not saving it.";
+  private String networAlreadySavedSnackBarMessage = "The current network has already been saved.";
 
   public Networks(Context context, NetworkInformation networkInfo) {
     this.prefsNetworks = context.getSharedPreferences( "networks", modePrivate);
@@ -35,12 +38,17 @@ public class Networks {
     String bssid = networkEntry.getKey();
     String ssid = networkEntry.getValue();
     if(bssid == null){
+//      Utils.showSnackBar(, bssidNullSnackBarMessage);
+      return;
+    }
+    if(networkFoundInSavedNetworks(bssid)){
+//      Utils.showSnackBar(, networAlreadySavedSnackBarMessage);
       return;
     }
     saveNetwork(bssid, ssid);
   }
 
-  public void removeNetwork(String bssid){
+  public void removeNetwork(String bssid, String ssid){
     if(!networkFoundInSavedNetworks(bssid)){
       return;
     }
@@ -51,6 +59,8 @@ public class Networks {
         "networks",
         convertNetworksHashMapToJsonString(savedNetworks)
     ).apply();
+
+//    Utils.showSnackBar(, ssid + "removed");
   }
 
   private Map<String,String> getSavedNetworks(){
@@ -72,6 +82,7 @@ public class Networks {
     savedNetworks.put(bssid, ssid);
 
     prefsNetworks.edit().putString("networks", convertNetworksHashMapToJsonString(savedNetworks)).apply();
+//    Utils.showSnackBar(, ssid + "saved");
   }
 
   private boolean networkFoundInSavedNetworks(String bssid){

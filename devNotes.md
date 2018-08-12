@@ -38,3 +38,8 @@ We use the broadcast receiver for detecting network changes in Android Marshmell
 
 The built in android emulator in IntelliJ seems to crash my system, so try using Androidx86 with virtualbox to test on Oreo. 
 -- to get the virtualbox emulator to show up as a device when you click run in IntelliJ, first on the commandline, type `adb connect 192.168.1.5:5555` and change the IP to whatever the ip is of the virtualbox vm.
+ `adb -s 192.168.1.5:5555 install app-debug.apk`
+ `adb -s 192.168.56.101:5555 shell`
+ https://stackoverflow.com/questions/14654718/how-to-use-adb-shell-when-multiple-devices-are-connected-fails-with-error-mor
+ 
+ Also, remember that by default my phone uses the pihole dns, which will interfere when testing analytics in the android app, so either switch to using google dns on the phone or use the Androidx86 VM to test.

@@ -8,11 +8,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
+import com.bugsnag.android.Bugsnag;
+
 
 public class MainActivity extends AppCompatActivity {
   private BlueLossSettings blueLossSettings;
@@ -20,32 +21,40 @@ public class MainActivity extends AppCompatActivity {
   private Discoverable discoverable;
   private NetworkInformation networkInfo;
   private static final int exitDelay = (Toast.LENGTH_LONG + 2) * 1000;
+  private static View mainActivityView;
+  public Intent discoverableService;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    blueLossSettings = new BlueLossSettings(this);
-    networkInfo = new NetworkInformation(this);
-    networks = new Networks(this, networkInfo);
-    discoverable = new Discoverable(blueLossSettings, networks);
 
-    if(!permissionsEnabled(MainActivity.this)){
-      promptForPermissions(MainActivity.this);
-    }
+//    mainActivityView = findViewById(android.R.id.content);
+//    blueLossSettings = new BlueLossSettings(this);
+//    networkInfo = new NetworkInformation(this);
+//    networks = new Networks(this, networkInfo);
+//    discoverable = new Discoverable(blueLossSettings, networks);
+//    discoverableService = new Intent(this, DiscoverableService.class);
+//
+//    if(!permissionsEnabled(MainActivity.this)){
+//      promptForPermissions(MainActivity.this);
+//    }
+//
+//    setUpCompoundButtonListeners();
+//
+//    discoverable.toggleDiscoverable();
+//
+//    if(Utils.isOreoOrAbove()){
+//      startForegroundService(discoverableService);
+//    }
+//    else{
+//      startService(discoverableService);
+//    }
 
-    discoverable.toggleDiscoverable();
 
-    setUpCompoundButtonListeners();
-
-    Intent intent = new Intent(this, DiscoverableService.class);
-    if(Utils.isOreoOrAbove()){
-      startForegroundService(intent);
-    }
-    else{
-      startService(intent);
-    }
-
+    Bugsnag.init(this);
+    Bugsnag.notify(new RuntimeException("Test error new import key idea"));
+//    throw new RuntimeException("Fatal error in MainActivity" );
   }
 
   @Override
@@ -54,11 +63,11 @@ public class MainActivity extends AppCompatActivity {
       return;
     }
     if(grantResults.length < 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED){
-      Toast toast = Toast.makeText(getApplicationContext(), "This permission is needed. Exiting BlueLoss.", Toast.LENGTH_LONG);
-      toast.show();
+      Utils.showSnackBar(mainActivityView, "This permission is needed. Exiting BlueLoss.");
       // Close the app if we aren't allowed permission.
       Utils.setTimeout(new Runnable() {
         public void run() {
+          stopService(discoverableService);
           Utils.forceAppExit();
         }
       }, exitDelay);
@@ -111,35 +120,7 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         blueLossSettings.setDiscoverableWhenNotConnectedToNetwork(isChecked);
-      }
-    });
-
-    CheckBox rollbarLoggingCheckBox = findViewById(R.id.rollbarLoggingCheckBox);
-    rollbarLoggingCheckBox.setChecked(blueLossSettings.isRollbarLoggingEnabled());
-
-    rollbarLoggingCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        blueLossSettings.setRollbarLoggingEnabled(isChecked);
-      }
-    });
-
-    Button saveNetwork = findViewById(R.id.saveButton);
-    saveNetwork.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        networks.saveCurrentNetwork();
         discoverable.toggleDiscoverable();
-        MyLogger.d(networkInfo.getNetworkInfo());
-
-      }
-    });
-
-    Button removeNetwork = findViewById(R.id.removeButton);
-    removeNetwork.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        networks.removeNetwork("f8:1a:67:42:f3:e8");
       }
     });
 

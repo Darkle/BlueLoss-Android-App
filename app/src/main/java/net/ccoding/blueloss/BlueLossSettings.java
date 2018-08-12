@@ -1,6 +1,5 @@
 package net.ccoding.blueloss;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 

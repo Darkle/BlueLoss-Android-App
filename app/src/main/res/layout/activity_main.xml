@@ -11,49 +11,17 @@
             android:text="Enable BlueLoss"
             android:layout_width="0dp"
             android:layout_height="42dp"
-            android:id="@+id/enableDisableSwitch" android:layout_marginTop="8dp"
+            android:id="@+id/enableDisableSwitch" android:layout_marginTop="24dp"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
+            android:layout_marginStart="24dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="24dp"/>
     <CheckBox
-            android:text="discov-allways"
+            android:text="Force always discoverable"
             android:layout_width="0dp"
             android:layout_height="43dp"
             android:id="@+id/discoverableWhenNotConnectedToNetworkCheckBox" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="24dp" android:layout_marginTop="24dp"
             app:layout_constraintTop_toBottomOf="@+id/enableDisableSwitch"/>
-    <CheckBox
-            android:text="Log Errors To rollbar.com"
-            android:layout_width="0dp"
-            android:layout_height="37dp"
-            android:id="@+id/rollbarLoggingCheckBox" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/discoverableWhenNotConnectedToNetworkCheckBox"
-            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="8dp"
-            app:layout_constraintHorizontal_bias="0.0" app:layout_constraintVertical_bias="0.025"/>
-    <Button
-            android:text="Networks  >"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/button" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/rollbarLoggingCheckBox" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp"
-            android:background="@android:drawable/screen_background_light_transparent"/>
-    <Button
-            android:text="Save Network"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/saveButton" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/button"/>
-    <Button
-            android:text="Remove Network"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/removeButton" app:layout_constraintStart_toEndOf="@+id/saveButton"
-            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/button"/>
 
 </android.support.constraint.ConstraintLayout>
