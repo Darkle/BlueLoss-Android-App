@@ -29,6 +29,7 @@ public class NetworkInformation {
   }
 
   private String getNetworkSSID(){
-    return getConnectionInfo().getSSID();
+    // For some reason sometimes the ssid string is in double quotes.
+    return Utils.removeDoubleQuotes(getConnectionInfo().getSSID());
   }
 }

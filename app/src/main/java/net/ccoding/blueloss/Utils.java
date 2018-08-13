@@ -57,4 +57,16 @@ final class Utils {
   public static void forceAppExit(){
     android.os.Process.killProcess(android.os.Process.myPid());
   }
+
+  public static String removeDoubleQuotes(String ssid){
+    if(ssid != null && ssid.length() > 2){
+      if(ssid.startsWith("\"")){
+        ssid = ssid.substring(1);
+      }
+      if(ssid.endsWith("\"")){
+        ssid = ssid.substring(0, ssid.length() - 1);
+      }
+    }
+    return ssid;
+  }
 }
