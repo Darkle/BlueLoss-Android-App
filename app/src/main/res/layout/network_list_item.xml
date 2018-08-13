@@ -21,17 +21,18 @@
                     android:layout_marginStart="17dp"
                     android:contentDescription="WiFi @android:string/fingerprint_icon_content_description"
                     android:scaleType="centerInside" app:srcCompat="@drawable/ic_wifigrey"/>
+
             <TextView
                     android:text="Foo Netowork"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
                     android:id="@+id/ssidTextView"
                     android:textAppearance="@android:style/TextAppearance.Material.Large"
                     android:textColor="@color/bluelossTextColor"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="100dp" android:maxWidth="240dp"
-            />
+                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="80dp"
+                    android:textAlignment="viewStart"
+                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="80dp"/>
             <TextView
                     android:text="cf-1c-ae-7f-ea-70 "
                     android:layout_width="wrap_content"
@@ -43,8 +44,9 @@
                     android:layout_marginBottom="8dp"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" android:textSize="14sp"
                     android:textColor="@color/bluelossTextColorLight" tools:ignore="HardcodedText"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="100dp"/>
+                    app:layout_constraintVertical_bias="0.0" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="80dp"
+            />
             <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
