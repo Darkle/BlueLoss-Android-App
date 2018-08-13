@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/activity_networks_view"
-        tools:context=".NetworksViewActivity">
+        tools:context=".NetworksViewActivity" android:background="@color/bluelossOffWhite">
 
     <android.support.v7.widget.RecyclerView
             android:layout_width="0dp"
@@ -17,7 +17,8 @@
             app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="8dp"
             android:id="@+id/networksRecyclerView" tools:listitem="@layout/network_list_item"
             app:layout_constraintHorizontal_bias="1.0" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/addCurrentNetworkButton">
+            app:layout_constraintBottom_toTopOf="@+id/addCurrentNetworkButton"
+            android:background="@color/bluelossOffWhite">
     </android.support.v7.widget.RecyclerView>
     <Button
             android:text="Add Current Network"
