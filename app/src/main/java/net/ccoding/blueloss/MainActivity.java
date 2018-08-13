@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
   private static final int exitDelay = (Toast.LENGTH_LONG + 2) * 1000;
   private static final int permissionRequestCode = 1;
   private static View mainActivityView;
+  private Intent intentToOpenNetworksView;
   public Intent discoverableService;
 
   @Override
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     networks = new Networks(this, networkInfo);
     discoverable = new Discoverable(blueLossSettings, networks);
     discoverableService = new Intent(this, DiscoverableService.class);
+    intentToOpenNetworksView = new Intent(this, NetworksViewActivity.class);
+
 
     if(!blueLossSettings.isBugsnagLoggingEnabled()){
       Bugsnag.disableExceptionHandler();
@@ -57,7 +61,8 @@ public class MainActivity extends AppCompatActivity {
     else{
       startService(discoverableService);
     }
-
+    //TODO: remove this
+    networks._____debug____AddRandomNetworks();
   }
 
   @Override
@@ -143,6 +148,14 @@ public class MainActivity extends AppCompatActivity {
       }
     });
 
+    Button openNetworksViewButton = findViewById(R.id.openNetworksViewButton);
+
+    openNetworksViewButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        startActivity(intentToOpenNetworksView);
+      }
+    });
 
   }
 }

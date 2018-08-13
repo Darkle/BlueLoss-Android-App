@@ -1,5 +1,6 @@
 
 Don't use the Android Studio (IntelliJ) emulator as that makes my system hang and crash and makes it so that I have to reboot, so try using [Androidx86](http://www.android-x86.org/) with virtualbox to test on Oreo. 
+Note: disable mouse integration in the virtualbox menu when the vm is running to get the mouse to work.
 -- to get the virtualbox emulator to show up as a device when you click run in IntelliJ, first on the commandline, type `adb connect 192.168.1.5:5555` and change the IP to whatever the ip is of the virtualbox vm.
  `adb -s 192.168.1.5:5555 install app-debug.apk`
  `adb -s 192.168.56.101:5555 shell`

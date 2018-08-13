@@ -1,0 +1,73 @@
+package net.ccoding.blueloss;
+
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+public class NetworksViewRecyclerAdapter extends RecyclerView.Adapter<NetworksViewRecyclerAdapter.ViewHolder>{
+  private final Context mContext;
+  private final LayoutInflater layoutInflater;
+  private final Networks networks;
+  private final NetworkInformation networkInfo;
+
+  public NetworksViewRecyclerAdapter(Context mContext, Networks networks, NetworkInformation networkInfo) {
+    this.mContext = mContext;
+    this.layoutInflater = LayoutInflater.from(mContext);
+    this.networks = networks;
+    this.networkInfo = networkInfo;
+  }
+
+  @NonNull
+  @Override
+  public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    View itemView = layoutInflater.inflate(R.layout.network_list_item, parent, false);
+    return new ViewHolder(itemView);
+  }
+
+  @Override
+  public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    LinkedHashMap<String,String> savedNetworks = networks.getSavedNetworks();
+    List keys = new ArrayList<>(savedNetworks.keySet());
+    List values = new ArrayList<>(savedNetworks.values());
+    String connected = "";
+
+    LinkedHashMap.Entry<String,String> networkEntry = Utils.getStringMapFirstEntry(networkInfo.getNetworkInfo());
+    String bssidOfCurrentNetwork = networkEntry.getKey();
+
+    if(bssidOfCurrentNetwork.equals(keys.get(position))){
+      connected = "connected";
+    }
+
+    holder.bssidTextView.setText((String)keys.get(position));
+    holder.ssidTextView.setText((String)values.get(position));
+    holder.connectedTextView.setText(connected);
+  }
+
+  @Override
+  public int getItemCount() {
+    LinkedHashMap<String,String> savedNetworks = networks.getSavedNetworks();
+    return savedNetworks.size();
+  }
+
+  public class ViewHolder extends RecyclerView.ViewHolder {
+
+    public final TextView ssidTextView;
+    public final TextView bssidTextView;
+    public final TextView connectedTextView;
+
+    public ViewHolder(View itemView) {
+      super(itemView);
+      ssidTextView = itemView.findViewById(R.id.ssidTextView);
+      bssidTextView = itemView.findViewById(R.id.bssidTextView);
+      connectedTextView = itemView.findViewById(R.id.connectedTextView);
+    }
+  }
+}

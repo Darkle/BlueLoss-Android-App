@@ -8,10 +8,10 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedHashMap;
 
 public class Networks {
-  private static final Type typeOfHashMap = new TypeToken<Map<String, String>>() { }.getType();  // https://stackoverflow.com/a/12117517/2785644
+  private static final Type typeOfHashMap = new TypeToken<LinkedHashMap<String, String>>() { }.getType();  // https://stackoverflow.com/a/12117517/2785644
   private SharedPreferences prefsNetworks;
   private NetworkInformation networkInfo;
   private static int modePrivate = 0;
@@ -24,7 +24,7 @@ public class Networks {
   }
 
   public boolean isConnectedToASavedNetwork() {
-    Map.Entry<String,String> networkEntry = Utils.getStringMapFirstEntry(networkInfo.getNetworkInfo());
+    LinkedHashMap.Entry<String,String> networkEntry = Utils.getStringMapFirstEntry(networkInfo.getNetworkInfo());
     String bssid = networkEntry.getKey();
 
     if(bssid == null){
@@ -34,11 +34,11 @@ public class Networks {
   }
 
   public void saveCurrentNetwork(){
-    Map.Entry<String,String> networkEntry = Utils.getStringMapFirstEntry(networkInfo.getNetworkInfo());
+    LinkedHashMap.Entry<String,String> networkEntry = Utils.getStringMapFirstEntry(networkInfo.getNetworkInfo());
     String bssid = networkEntry.getKey();
     String ssid = networkEntry.getValue();
     if(bssid == null){
-//      Utils.showSnackBar(, bssidNullSnackBarMessage);
+//      Utils.showSnackBar(, bssidNullSnackBarMessage);  remember cant pass in view when constructing Networks as the boot recieved has no view i think
       return;
     }
     if(networkFoundInSavedNetworks(bssid)){
@@ -52,7 +52,7 @@ public class Networks {
     if(!networkFoundInSavedNetworks(bssid)){
       return;
     }
-    Map<String,String> savedNetworks = getSavedNetworks();
+    LinkedHashMap<String,String> savedNetworks = getSavedNetworks();
     savedNetworks.remove(bssid);
 
     prefsNetworks.edit().putString(
@@ -63,12 +63,12 @@ public class Networks {
 //    Utils.showSnackBar(, ssid + "removed");
   }
 
-  private Map<String,String> getSavedNetworks(){
+  public LinkedHashMap<String,String> getSavedNetworks(){
     String serializedNetworks = prefsNetworks.getString("networks","");
-    Map<String,String> networks = convertJsonStringToNetworksHashMap(serializedNetworks);
+    LinkedHashMap<String,String> networks = convertJsonStringToNetworksHashMap(serializedNetworks);
 
     if(networks == null){
-      networks = new HashMap<String,String>();
+      networks = new LinkedHashMap<String,String>();
     }
     return networks;
   }
@@ -78,7 +78,7 @@ public class Networks {
       return;
     }
 
-    Map<String,String> savedNetworks = getSavedNetworks();
+    LinkedHashMap<String,String> savedNetworks = getSavedNetworks();
     savedNetworks.put(bssid, ssid);
 
     prefsNetworks.edit().putString("networks", convertNetworksHashMapToJsonString(savedNetworks)).apply();
@@ -86,17 +86,33 @@ public class Networks {
   }
 
   private boolean networkFoundInSavedNetworks(String bssid){
-    Map<String,String> savedNetworks = getSavedNetworks();
+    LinkedHashMap<String,String> savedNetworks = getSavedNetworks();
     return savedNetworks.containsKey(bssid);
   }
 
-  private Map<String,String> convertJsonStringToNetworksHashMap(String json){
+  private LinkedHashMap<String,String> convertJsonStringToNetworksHashMap(String json){
     Gson gson = new Gson();
     return gson.fromJson(json, typeOfHashMap);
   }
 
-  private String convertNetworksHashMapToJsonString(Map<String,String> networks){
+  private String convertNetworksHashMapToJsonString(LinkedHashMap<String,String> networks){
     Gson gson = new Gson();
     return gson.toJson(networks, typeOfHashMap);
+  }
+
+  public void _____debug____AddRandomNetworks(){
+    saveNetwork("eb-a6-57-e5-9d-2e", "Network 1");
+    saveNetwork("e3-b7-56-33-41-86", "Network 2");
+    saveCurrentNetwork();
+    saveNetwork("30-65-0d-40-2e-b2", "Network 3");
+    saveNetwork("7e-24-16-1e-89-f6", "Network 4");
+    saveNetwork("78-c4-b9-df-69-48", "Network 5");
+    saveNetwork("02-ec-22-bb-a0-df", "Network 6");
+    saveNetwork("5f-03-b6-06-c8-76", "Network 7");
+    saveNetwork("e2-e2-99-3b-45-cb", "Network 8");
+    saveNetwork("27-f3-bd-25-6a-40", "Network 9");
+    saveNetwork("22-8f-40-f5-54-5c", "Network 10");
+    saveNetwork("44-53-87-64-80-1b", "Network 11");
+    saveNetwork("87-2a-fc-2c-51-eb", "Network asdfsdafk kjasdh kasjdh kasjdh kasjdh kasjd dh");
   }
 }
