@@ -1,5 +1,6 @@
 package net.ccoding.blueloss;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,9 +14,11 @@ public class NetworksViewActivity extends AppCompatActivity {
   private Networks networks;
   private Discoverable discoverable;
   private NetworkInformation networkInfo;
-  private static View networksActivityView;
-  private NetworksViewRecyclerAdapter networksViewRecyclerAdapter;
-
+  private View networksActivityView;
+  private static NetworksViewRecyclerAdapter networksViewRecyclerAdapter;
+  private static RecyclerView networksRecyclerView;
+  private LinearLayoutManager networksLayoutManager;
+  
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -33,42 +36,41 @@ public class NetworksViewActivity extends AppCompatActivity {
 
     initializeDisplayContent();
 
-//    Button saveNetwork = findViewById(R.id.saveButton);
-//    saveNetwork.setOnClickListener(new View.OnClickListener() {
-//      @Override
-//      public void onClick(View v) {
-//        networks.saveCurrentNetwork();
-//        discoverable.toggleDiscoverable();
-//        MyLogger.d(networkInfo.getNetworkInfo());
-//
-//      }
-//    });
-//
-//    Button removeNetwork = findViewById(R.id.removeButton);
-//    removeNetwork.setOnClickListener(new View.OnClickListener() {
-//      @Override
-//      public void onClick(View v) {
-////        networks.removeNetwork();
-//        discoverable.toggleDiscoverable();
-//      }
-//    });
-
+    Button saveCurrentNetwork = findViewById(R.id.addCurrentNetworkButton);
+    saveCurrentNetwork.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        networks.saveCurrentNetwork();
+        discoverable.toggleDiscoverable();
+        notifyDataChanged();
+        
+        networksLayoutManager.smoothScrollToPosition(
+          networksRecyclerView,
+          null,
+          networksViewRecyclerAdapter.getItemCount() - 1
+        );
+      }
+    });
   }
 
   @Override
   protected void onResume() {
     super.onResume();
-    networksViewRecyclerAdapter.notifyDataSetChanged();
+    notifyDataChanged();
   }
 
   private void initializeDisplayContent(){
-    final RecyclerView networksRecyclerView = findViewById(R.id.networksRecyclerView);
-
-    LinearLayoutManager networksLayoutManager = new LinearLayoutManager(this);
+    networksRecyclerView = findViewById(R.id.networksRecyclerView);
+  
+    networksLayoutManager = new LinearLayoutManager(this);
     networksRecyclerView.setLayoutManager(networksLayoutManager);
 
-    networksViewRecyclerAdapter = new NetworksViewRecyclerAdapter(this, networks, networkInfo);
+    networksViewRecyclerAdapter = new NetworksViewRecyclerAdapter(this, networks, networkInfo, discoverable);
     networksRecyclerView.setAdapter(networksViewRecyclerAdapter);
   }
-
+  
+  public static void notifyDataChanged(){
+    networksViewRecyclerAdapter.notifyDataSetChanged();
+  }
+  
 }

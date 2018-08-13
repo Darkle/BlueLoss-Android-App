@@ -55,7 +55,7 @@ public class DiscoverableService extends Service {
         new TimerTask() {
           @Override
           public void run() {
-            MyLogger.d("After TimerTask timeout");
+//            MyLogger.d("After TimerTask timeout");
             discoverable.toggleDiscoverable();
           }
         },

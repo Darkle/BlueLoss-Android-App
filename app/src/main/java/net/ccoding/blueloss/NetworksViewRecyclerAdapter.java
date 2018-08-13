@@ -1,14 +1,12 @@
 package net.ccoding.blueloss;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,12 +20,14 @@ public class NetworksViewRecyclerAdapter extends RecyclerView.Adapter<NetworksVi
   private final LayoutInflater layoutInflater;
   private final Networks networks;
   private final NetworkInformation networkInfo;
+  private final Discoverable discoverable;
 
-  public NetworksViewRecyclerAdapter(Context mContext, Networks networks, NetworkInformation networkInfo) {
+  public NetworksViewRecyclerAdapter(NetworksViewActivity mContext, Networks networks, NetworkInformation networkInfo, Discoverable discoverable) {
     this.mContext = mContext;
     this.layoutInflater = LayoutInflater.from(mContext);
     this.networks = networks;
     this.networkInfo = networkInfo;
+    this.discoverable = discoverable;
   }
 
   @NonNull
@@ -83,6 +83,8 @@ public class NetworksViewRecyclerAdapter extends RecyclerView.Adapter<NetworksVi
             bssidTextView.getText().toString(),
             ssidTextView.getText().toString()
           );
+          discoverable.toggleDiscoverable();
+          NetworksViewActivity.notifyDataChanged();
         }
       });
     }
