@@ -22,6 +22,7 @@ public class NetworksViewActivity extends AppCompatActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.networksActivityToolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    setTitle("Saved Networks");
 
     networksActivityView = findViewById(android.R.id.content);
     blueLossSettings = new BlueLossSettings(this);

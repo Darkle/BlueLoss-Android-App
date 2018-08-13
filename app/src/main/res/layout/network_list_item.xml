@@ -12,36 +12,37 @@
                 android:layout_height="wrap_content">
 
             <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="32dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:id="@+id/wifiIcon"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="6dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="17dp" app:srcCompat="@drawable/ic_wifigrey"
-                    android:contentDescription="WiFi @android:string/fingerprint_icon_content_description"/>
+                    android:layout_marginStart="17dp"
+                    android:contentDescription="WiFi @android:string/fingerprint_icon_content_description"
+                    android:scaleType="centerInside" app:srcCompat="@drawable/ic_wifigrey"/>
             <TextView
                     android:text="Foo Network"
-                    android:layout_width="222dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-                    app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:id="@+id/ssidTextView"
                     android:textAppearance="@android:style/TextAppearance.Material.Large"
-                    android:textColor="@color/bluelossTextColor"/>
+                    android:textColor="@color/bluelossTextColor"
+                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="80dp"
+            />
             <TextView
                     android:text="cf-1c-ae-7f-ea-70 "
-                    android:layout_width="222dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/bssidTextView" app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="8dp" android:layout_marginTop="8dp"
+                    android:id="@+id/bssidTextView"
+                    android:layout_marginTop="8dp"
                     app:layout_constraintTop_toBottomOf="@+id/ssidTextView"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginBottom="8dp"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" android:textSize="14sp"
-                    android:textColor="@color/bluelossTextColorLight" tools:ignore="HardcodedText"/>
+                    android:textColor="@color/bluelossTextColorLight" tools:ignore="HardcodedText"
+                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="80dp"/>
             <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
