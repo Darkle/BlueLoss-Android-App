@@ -1,8 +1,10 @@
 package net.ccoding.blueloss;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,20 +41,27 @@ public class NetworksViewRecyclerAdapter extends RecyclerView.Adapter<NetworksVi
 
   @Override
   public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-    holder.mCurrentPosition = position;
+    int currentPosition = holder.getAdapterPosition();
+    holder.mCurrentPosition = currentPosition;
     LinkedHashMap<String,String> savedNetworks = networks.getSavedNetworks();
     List keys = new ArrayList<>(savedNetworks.keySet());
     List values = new ArrayList<>(savedNetworks.values());
-
+  
     LinkedHashMap.Entry<String,String> networkEntry = Utils.getStringMapFirstEntry(networkInfo.getNetworkInfo());
     String bssidOfCurrentNetwork = networkEntry.getKey();
-
-    if(bssidOfCurrentNetwork != null && bssidOfCurrentNetwork.equals(keys.get(position))){
+    
+    if(bssidOfCurrentNetwork != null && bssidOfCurrentNetwork.equals(keys.get(currentPosition).toString())){
       holder.wifiIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_wifiblue));
     }
+    /*
+    Not sure why but if you don't reset the original icon, sometimes it uses the blue one. ¯\_(ツ)_/¯
+    */
+    else{
+      holder.wifiIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_wifigrey));
+    }
 
-    holder.bssidTextView.setText((String)keys.get(position));
-    holder.ssidTextView.setText((String)values.get(position));
+    holder.bssidTextView.setText(keys.get(currentPosition).toString());
+    holder.ssidTextView.setText(values.get(currentPosition).toString());
   }
 
   @Override
@@ -71,22 +80,49 @@ public class NetworksViewRecyclerAdapter extends RecyclerView.Adapter<NetworksVi
 
     public ViewHolder(View itemView) {
       super(itemView);
-      ssidTextView = itemView.findViewById(R.id.ssidTextView);
       bssidTextView = itemView.findViewById(R.id.bssidTextView);
+      ssidTextView = itemView.findViewById(R.id.ssidTextView);
       wifiIcon = itemView.findViewById(R.id.wifiIcon);
       networkTrashButton = itemView.findViewById(R.id.networkTrashButton);
-
+      
       networkTrashButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          networks.removeNetwork(
-            bssidTextView.getText().toString(),
-            ssidTextView.getText().toString()
-          );
-          discoverable.toggleDiscoverable();
-          NetworksViewActivity.notifyDataChanged();
+          showDeleteConfirmDialog();
         }
       });
+    }
+    
+    private void showDeleteConfirmDialog(){
+      new AlertDialog.Builder(mContext)
+        .setMessage("Are you sure you want to delete \""+ ssidTextView.getText().toString() +"\" from saved networks?")
+        .setPositiveButton("Delete",
+            new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int which) {
+                removeNetworkAndNotifyDataChange();
+                dialog.dismiss();
+              }
+            }
+        )
+        .setNegativeButton("Cancel",
+            new DialogInterface.OnClickListener() {
+              @Override
+              public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+              }
+            }
+        )
+        .create()
+        .show();
+    }
+    
+    private void removeNetworkAndNotifyDataChange(){
+      networks.removeNetwork(
+          bssidTextView.getText().toString(),
+          ssidTextView.getText().toString()
+      );
+      discoverable.toggleDiscoverable();
+      NetworksViewActivity.notifyDataChanged();
     }
   }
 }
