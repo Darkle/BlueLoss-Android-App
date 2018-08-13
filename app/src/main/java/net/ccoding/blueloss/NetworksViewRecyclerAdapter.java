@@ -1,12 +1,15 @@
 package net.ccoding.blueloss;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,6 +39,7 @@ public class NetworksViewRecyclerAdapter extends RecyclerView.Adapter<NetworksVi
 
   @Override
   public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    holder.mCurrentPosition = position;
     LinkedHashMap<String,String> savedNetworks = networks.getSavedNetworks();
     List keys = new ArrayList<>(savedNetworks.keySet());
     List values = new ArrayList<>(savedNetworks.values());
@@ -43,13 +47,12 @@ public class NetworksViewRecyclerAdapter extends RecyclerView.Adapter<NetworksVi
     LinkedHashMap.Entry<String,String> networkEntry = Utils.getStringMapFirstEntry(networkInfo.getNetworkInfo());
     String bssidOfCurrentNetwork = networkEntry.getKey();
 
-    if(bssidOfCurrentNetwork.equals(keys.get(position))){
+    if(bssidOfCurrentNetwork != null && bssidOfCurrentNetwork.equals(keys.get(position))){
       holder.wifiIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_wifiblue));
     }
 
     holder.bssidTextView.setText((String)keys.get(position));
     holder.ssidTextView.setText((String)values.get(position));
-
   }
 
   @Override
@@ -63,12 +66,25 @@ public class NetworksViewRecyclerAdapter extends RecyclerView.Adapter<NetworksVi
     public final TextView ssidTextView;
     public final TextView bssidTextView;
     public final ImageView wifiIcon;
+    public final ImageButton networkTrashButton;
+    public int mCurrentPosition;
 
     public ViewHolder(View itemView) {
       super(itemView);
       ssidTextView = itemView.findViewById(R.id.ssidTextView);
       bssidTextView = itemView.findViewById(R.id.bssidTextView);
       wifiIcon = itemView.findViewById(R.id.wifiIcon);
+      networkTrashButton = itemView.findViewById(R.id.networkTrashButton);
+
+      networkTrashButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          networks.removeNetwork(
+            bssidTextView.getText().toString(),
+            ssidTextView.getText().toString()
+          );
+        }
+      });
     }
   }
 }

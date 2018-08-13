@@ -14,6 +14,7 @@ public class NetworksViewActivity extends AppCompatActivity {
   private Discoverable discoverable;
   private NetworkInformation networkInfo;
   private static View networksActivityView;
+  private NetworksViewRecyclerAdapter networksViewRecyclerAdapter;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +55,19 @@ public class NetworksViewActivity extends AppCompatActivity {
 
   }
 
+  @Override
+  protected void onResume() {
+    super.onResume();
+    networksViewRecyclerAdapter.notifyDataSetChanged();
+  }
+
   private void initializeDisplayContent(){
     final RecyclerView networksRecyclerView = findViewById(R.id.networksRecyclerView);
 
     LinearLayoutManager networksLayoutManager = new LinearLayoutManager(this);
     networksRecyclerView.setLayoutManager(networksLayoutManager);
 
-    final NetworksViewRecyclerAdapter networksViewRecyclerAdapter = new NetworksViewRecyclerAdapter(this, networks, networkInfo);
+    networksViewRecyclerAdapter = new NetworksViewRecyclerAdapter(this, networks, networkInfo);
     networksRecyclerView.setAdapter(networksViewRecyclerAdapter);
   }
 
