@@ -88,18 +88,20 @@ public class NetworksViewRecyclerAdapter extends RecyclerView.Adapter<NetworksVi
       networkTrashButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          showDeleteConfirmDialog();
+          showDeleteConfirmDialog(v);
         }
       });
     }
     
-    private void showDeleteConfirmDialog(){
+    private void showDeleteConfirmDialog(View v){
+      final View view = v;
+      
       new AlertDialog.Builder(mContext)
         .setMessage("Are you sure you want to delete \""+ ssidTextView.getText().toString() +"\" from saved networks?")
         .setPositiveButton("Delete",
             new DialogInterface.OnClickListener() {
               public void onClick(DialogInterface dialog, int which) {
-                removeNetworkAndNotifyDataChange();
+                removeNetworkAndNotifyDataChange(view);
                 dialog.dismiss();
               }
             }
@@ -116,10 +118,11 @@ public class NetworksViewRecyclerAdapter extends RecyclerView.Adapter<NetworksVi
         .show();
     }
     
-    private void removeNetworkAndNotifyDataChange(){
+    private void removeNetworkAndNotifyDataChange(View v){
       networks.removeNetwork(
-          bssidTextView.getText().toString(),
-          ssidTextView.getText().toString()
+        bssidTextView.getText().toString(),
+        ssidTextView.getText().toString(),
+        v
       );
       discoverable.toggleDiscoverable();
       NetworksViewActivity.notifyDataChanged();

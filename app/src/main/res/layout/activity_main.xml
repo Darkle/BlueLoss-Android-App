@@ -50,7 +50,7 @@
                 app:layout_constraintStart_toStartOf="parent"
         />
         <Button
-                android:text="Networks"
+                android:text="Saved Networks"
                 android:layout_width="0dp"
                 android:id="@+id/openNetworksViewButton" android:layout_weight="1"
                 app:layout_constraintEnd_toEndOf="parent"

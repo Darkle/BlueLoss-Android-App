@@ -40,7 +40,7 @@ public class NetworksViewActivity extends AppCompatActivity {
     saveCurrentNetwork.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        networks.saveCurrentNetwork();
+        networks.saveCurrentNetwork(v);
         discoverable.toggleDiscoverable();
         notifyDataChanged();
         

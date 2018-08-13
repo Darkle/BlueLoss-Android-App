@@ -3,6 +3,7 @@ package net.ccoding.blueloss;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
+import android.view.View;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -16,7 +17,7 @@ public class Networks {
   private NetworkInformation networkInfo;
   private static int modePrivate = 0;
   private String bssidNullSnackBarMessage = "The current network returned null for it's BSSID, so we are not saving it.";
-  private String networAlreadySavedSnackBarMessage = "The current network has already been saved.";
+  private String networkAlreadySavedSnackBarMessage = "The current network has already been saved.";
 
   public Networks(Context context, NetworkInformation networkInfo) {
     this.prefsNetworks = context.getSharedPreferences( "networks", modePrivate);
@@ -33,22 +34,22 @@ public class Networks {
     return networkFoundInSavedNetworks(bssid);
   }
 
-  public void saveCurrentNetwork(){
+  public void saveCurrentNetwork(View view){
     LinkedHashMap.Entry<String,String> networkEntry = Utils.getStringMapFirstEntry(networkInfo.getNetworkInfo());
     String bssid = networkEntry.getKey();
     String ssid = networkEntry.getValue();
     if(bssid == null){
-//      Utils.showSnackBar(, bssidNullSnackBarMessage);  remember cant pass in view when constructing Networks as the boot recieved has no view i think
+      Utils.showSnackBar(view, bssidNullSnackBarMessage);
       return;
     }
     if(networkFoundInSavedNetworks(bssid)){
-//      Utils.showSnackBar(, networAlreadySavedSnackBarMessage);
+      Utils.showSnackBar(view, networkAlreadySavedSnackBarMessage);
       return;
     }
     saveNetwork(bssid, ssid);
   }
 
-  public void removeNetwork(String bssid, String ssid){
+  public void removeNetwork(String bssid, String ssid, View view){
     if(!networkFoundInSavedNetworks(bssid)){
       return;
     }
@@ -60,7 +61,7 @@ public class Networks {
         convertNetworksHashMapToJsonString(savedNetworks)
     ).apply();
 
-//    Utils.showSnackBar(, ssid + "removed");
+    Utils.showSnackBar(view, ssid + " network removed");
   }
 
   public LinkedHashMap<String,String> getSavedNetworks(){
@@ -82,7 +83,6 @@ public class Networks {
     savedNetworks.put(bssid, ssid);
 
     prefsNetworks.edit().putString("networks", convertNetworksHashMapToJsonString(savedNetworks)).apply();
-//    Utils.showSnackBar(, ssid + "saved");
   }
 
   private boolean networkFoundInSavedNetworks(String bssid){
@@ -103,7 +103,7 @@ public class Networks {
   public void _____debug____AddRandomNetworks(){
     saveNetwork("eb-a6-57-e5-9d-2e", "Network 1");
     saveNetwork("e3-b7-56-33-41-86", "Network 2");
-    saveCurrentNetwork();
+//    saveCurrentNetwork();
     saveNetwork("87-2a-fc-2c-51-eb", "Network asdfsdafk kjasdh kasjdh kasjdh kasjdh kasjd dh");
     saveNetwork("30-65-0d-40-2e-b2", "Network 3");
     saveNetwork("7e-24-16-1e-89-f6", "Network 4");
