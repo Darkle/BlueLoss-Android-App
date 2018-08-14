@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     discoverableService = new Intent(this, DiscoverableService.class);
     intentToOpenNetworksView = new Intent(this, NetworksViewActivity.class);
 
-
     if(!blueLossSettings.isBugsnagLoggingEnabled()){
       Bugsnag.disableExceptionHandler();
     }
