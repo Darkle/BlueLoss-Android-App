@@ -42,10 +42,6 @@ final class Utils {
     snackbar.show();
   }
 
-//  public static boolean isNougatOrAbove(){
-//    return android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N;
-//  }
-
   public static boolean isOreoOrAbove(){
     return android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O;
   }
