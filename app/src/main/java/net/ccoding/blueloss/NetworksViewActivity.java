@@ -14,7 +14,6 @@ public class NetworksViewActivity extends AppCompatActivity {
   private Networks networks;
   private Discoverable discoverable;
   private NetworkInformation networkInfo;
-  private View networksActivityView;
   private static NetworksViewRecyclerAdapter networksViewRecyclerAdapter;
   private static RecyclerView networksRecyclerView;
   private LinearLayoutManager networksLayoutManager;
@@ -28,7 +27,6 @@ public class NetworksViewActivity extends AppCompatActivity {
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     setTitle("Saved Networks");
 
-    networksActivityView = findViewById(android.R.id.content);
     blueLossSettings = new BlueLossSettings(this);
     networkInfo = new NetworkInformation(this);
     networks = new Networks(this, networkInfo);

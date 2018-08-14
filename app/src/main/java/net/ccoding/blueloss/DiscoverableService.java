@@ -20,7 +20,6 @@ public class DiscoverableService extends Service {
   public void onCreate() {
     mNotificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
     if(Utils.isOreoOrAbove()) {
-      MyLogger.d("Doing Oreo notification");
       startForeground(notificationIdCode, BlueLossServiceNotification.showServiceNotification(mNotificationManager, this));
     }
   }
@@ -38,13 +37,9 @@ public class DiscoverableService extends Service {
 
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
-    MyLogger.d("onStartCommand called");
-    MyLogger.d("networkStatusServiceRunning : " + discoverableServiceRunning);
 
     if(!discoverableServiceRunning){
       discoverableServiceRunning = true;
-
-      MyLogger.d("After if(!networkCheckServiceAlreadyRunning){ check");
 
       final BlueLossSettings blueLossSettings = new BlueLossSettings(this);
       final NetworkInformation networkInfo = new NetworkInformation(this);
@@ -55,7 +50,6 @@ public class DiscoverableService extends Service {
         new TimerTask() {
           @Override
           public void run() {
-//            MyLogger.d("After TimerTask timeout");
             discoverable.toggleDiscoverable();
           }
         },

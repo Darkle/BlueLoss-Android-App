@@ -61,7 +61,7 @@ public class Networks {
         convertNetworksHashMapToJsonString(savedNetworks)
     ).apply();
 
-    Utils.showSnackBar(view, ssid + " network removed");
+    Utils.showSnackBar(view, ssid + " network removed.");
   }
 
   public LinkedHashMap<String,String> getSavedNetworks(){
@@ -103,7 +103,6 @@ public class Networks {
   public void _____debug____AddRandomNetworks(){
     saveNetwork("eb-a6-57-e5-9d-2e", "Network 1");
     saveNetwork("e3-b7-56-33-41-86", "Network 2");
-//    saveCurrentNetwork();
     saveNetwork("87-2a-fc-2c-51-eb", "Network asdfsdafk kjasdh kasjdh kasjdh kasjdh kasjd dh");
     saveNetwork("30-65-0d-40-2e-b2", "Network 3");
     saveNetwork("7e-24-16-1e-89-f6", "Network 4");

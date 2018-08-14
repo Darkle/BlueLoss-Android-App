@@ -61,8 +61,6 @@ public class MainActivity extends AppCompatActivity {
     else{
       startService(discoverableService);
     }
-    //TODO: remove this
-    networks._____debug____AddRandomNetworks();
   }
 
   @Override
