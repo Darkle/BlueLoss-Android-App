@@ -38,11 +38,7 @@ final class Utils {
   }
 
   public static void showSnackBar(View view, String message){
-    Snackbar snackbar = Snackbar.make(
-        view,
-        message,
-        Snackbar.LENGTH_LONG
-    );
+    Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
     snackbar.show();
   }
 
