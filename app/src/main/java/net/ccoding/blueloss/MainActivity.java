@@ -23,9 +23,9 @@ public class MainActivity extends AppCompatActivity {
   private NetworkInformation networkInfo;
   private static final int exitDelay = (Toast.LENGTH_LONG + 2) * 1000;
   private static final int permissionRequestCode = 1;
-  private static View mainActivityView;
+  private View mainActivityView;
   private Intent intentToOpenNetworksView;
-  public Intent discoverableService;
+  private Intent discoverableService;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
