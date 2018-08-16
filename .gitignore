@@ -9,3 +9,4 @@
 /captures
 .externalNativeBuild
 app/src/main/res/values/api-keys.xml
+app/release/output.json
